@@ -1,0 +1,79 @@
+  getScoringTypes(game: Game): string[] {
+    if (game.competitionType === 'match') {
+      switch (game.gameType) {
+        case 'Stableford':
+          return ['Single Bet', 'Points'];
+        case 'Match Play':
+          return ['Closeout', 'Nassau', 'Single Bet'];
+        case 'Stroke Play':
+          return ['Single Bet'];
+        default:
+          return [];
+      }
+    } else {
+      switch (game.gameType) {
+        case 'Skins':
+        case 'Deuce Pot':
+          return ['Split Pot'];
+        case 'Defender':
+        case 'Nine Points':
+        case 'Split Sixes':
+        case 'Las Vegas':
+        case 'Las Vegas (Flips)':
+          return ['Points'];
+        case 'Best Ball':
+        case 'Best Two Balls':
+        case 'Best Three Balls':
+          return ['Closeout', 'Match', 'Nassau', 'Payouts'];
+        case 'Chicago':
+        case 'Stableford':
+          return ['Payouts', 'Points'];
+        case 'Low Ball, Low Total':
+        case 'Low Ball, High Ball':
+          return ['Closeout', 'Match', 'Nassau', 'Points'];
+        case 'Match Play':
+          return ['Closeout', 'Match', 'Nassau'];
+        case 'Low Gross / Low Net':
+        case 'Stroke Play':
+          return ['Payouts'];
+        case 'Hollywood':
+          return ['Match', 'Points'];
+        default:
+          return [];
+      }
+    }
+  }
+
+  getGameTypes(game: Game): string[] {
+    if (game.competitionType === 'individual') {
+      return [
+        'Chicago',
+        'Defender',
+        'Deuce Pot',
+        'Low Gross / Low Net',
+        'Nine Points',
+        'Par 3 Challenge',
+        'Par 5 Challenge',
+        'Skins',
+        'Split Sixes',
+        'Stableford',
+        'Stroke Play'
+      ];
+    } else if (game.competitionType === 'team') {
+      return [
+        'Best Ball',
+        'Flip the Burger',
+        'Hollywood',
+        'Las Vegas',
+        'Las Vegas (Flips)',
+        'Low Ball, Low Total',
+        'Low Ball, High Ball'
+      ];
+    } else {
+      return [
+        'Match Play',
+        'Stableford',
+        'Stroke Play'
+      ];
+    }
+  }

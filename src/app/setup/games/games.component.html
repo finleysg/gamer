@@ -1,0 +1,39 @@
+<div fxLayout="row" fxLayoutAlign="center none" class="m-t-15">
+  <h2>Games</h2>
+</div>
+<div fxLayout="row">
+  <mat-list>
+    <mat-list-item *ngFor="let game of round.games" (click)="editGame(game)">
+        <mat-icon color="primary" mat-list-icon>casino</mat-icon>
+      <h4 mat-line>{{game.name}}</h4>
+      <p class="mat-text-muted" mat-line>{{game.betValue}}</p>
+    </mat-list-item>
+  </mat-list>
+</div>
+<div fxLayout="row">
+  <div fxFlex.gt-sm="25" fxFlex.gt-xs="50" fxFlex="100">
+    <mat-nav-list class="navigation">
+      <mat-list-item>
+        <a class="relative" (click)="newGame('individual')">
+          <mat-icon class="m-r-15">person_add</mat-icon>
+          <span>Add an individual game</span>
+        </a>
+      </mat-list-item>
+      <mat-list-item>
+        <a class="relative" (click)="newGame('team')">
+          <mat-icon class="m-r-15">group_add</mat-icon>
+          <span>Add a team game</span>
+        </a>
+      </mat-list-item>
+      <mat-list-item>
+        <a class="relative" (click)="newGame('match')">
+          <mat-icon class="m-r-15">people_outline</mat-icon>
+          <span>Add a match (2 players)</span>
+        </a>
+      </mat-list-item>
+    </mat-nav-list>
+  </div>
+</div>
+<div class="m-t-30" fxLayout="row" fxLayoutAlign="center none">
+  <button mat-raised-button [color]="'primary'" (click)="onNext()">Let's Play!</button>
+</div>

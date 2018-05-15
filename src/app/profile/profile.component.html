@@ -1,0 +1,105 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row></mat-toolbar-row>
+  <mat-toolbar-row></mat-toolbar-row>
+</mat-toolbar>
+
+<div fxLayout="row wrap" fxLayoutAlign="center start">
+  <div fxFlex.gt-sm="55" fxFlex="100">
+    <mat-card class="mat-card-top">
+      <mat-tab-group>
+        <mat-tab>
+          <ng-template matTabLabel>Me</ng-template>
+          <mat-card-content>
+            <form [formGroup]="infoForm" fxLayout="column">
+              <div class="pb-1">
+                <mat-form-field style="width: 100%">
+                  <input matInput type="text" placeholder="First Name" [formControl]="infoForm.controls['firstName']">
+                </mat-form-field>
+                <small *ngIf="infoForm.controls['firstName'].hasError('required') && infoForm.controls['firstName'].touched" class="mat-text-warn">Your first name is required.</small>
+              </div>
+              <div class="pb-1">
+                <mat-form-field style="width: 100%">
+                  <input matInput type="text" placeholder="Last Name" [formControl]="infoForm.controls['lastName']">
+                </mat-form-field>
+                <small *ngIf="infoForm.controls['lastName'].hasError('required') && infoForm.controls['lastName'].touched" class="mat-text-warn">Your last name is required.</small>
+              </div>
+              <div class="pb-1">
+                <mat-form-field style="width: 100%">
+                  <input matInput type="eamil" placeholder="Email" [formControl]="infoForm.controls['email']">
+                </mat-form-field>
+                <small *ngIf="infoForm.controls['email'].hasError('required') && infoForm.controls['email'].touched" class="mat-text-warn">A valid is required.</small>
+                <small *ngIf="infoForm.controls['email'].errors?.email" class="mat-text-warn">That doesn't look like a real email address.</small>
+              </div>
+              <div class="pb-1">
+                <mat-form-field style="width: 100%">
+                  <input matInput type="text" placeholder="User Name" [formControl]="infoForm.controls['userName']">
+                </mat-form-field>
+                <small *ngIf="infoForm.controls['userName'].hasError('required') && infoForm.controls['userName'].touched" class="mat-text-warn">Your user name is your login name.</small>
+              </div>
+              <div class="pb-1">
+                  <mat-form-field style="width: 100%">
+                    <input matInput type="text" placeholder="GHIN" [formControl]="infoForm.controls['ghin']">
+                  </mat-form-field>
+                </div>
+                <div class="pb-1">
+                    <mat-form-field style="width: 100%">
+                      <input matInput type="text" placeholder="Handicap Index" [formControl]="infoForm.controls['handicap']">
+                    </mat-form-field>
+                  </div>
+                  </form>
+          </mat-card-content>
+        </mat-tab>
+        <mat-tab>
+          <ng-template matTabLabel>Friends</ng-template>
+          <mat-card-content>
+            <mat-list dense>
+              <mat-list-item *ngFor="let friend of friends">
+                <mat-icon matListIcon color="warn" (click)="removeFriend(friend)">remove_circle_outline</mat-icon>
+                {{friend.firstName}} {{friend.lastName}}
+              </mat-list-item>
+            </mat-list>
+            <mat-form-field class="partial-width-75 m-t-15">
+              <input type="text" placeholder="Available Players" matInput [formControl]="addFriend" [matAutocomplete]="auto">
+              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                <mat-option *ngFor="let member of filteredMembers | async" [value]="member">
+                  {{ member.firstName }} {{ member.lastName }} ({{member.ghin ? member.ghin : 'no ghin'}})
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            <a mat-mini-fab class="mat-fab-bottom-right m-r-10" color="accent" (click)="newFriend()">
+              <mat-icon>add</mat-icon>
+            </a>
+          </mat-card-content>
+        </mat-tab>
+        <mat-tab>
+          <ng-template matTabLabel>Password</ng-template>
+          <mat-card-content>
+            <form [formGroup]="passwordForm" fxLayout="column">
+              <div class="pb-1">
+                <mat-form-field style="width: 100%">
+                  <input matInput type="password" placeholder="New Password" [formControl]="passwordForm.controls['newPassword']">
+                </mat-form-field>
+                <small *ngIf="passwordForm.controls['newPassword'].hasError('required') && passwordForm.controls['newPassword'].touched"
+                  class="mat-text-warn">A new password is required.</small>
+              </div>
+              <div class="pb-1">
+                <mat-form-field style="width: 100%">
+                  <input matInput placeholder="Confirm Password" [formControl]="passwordForm.controls['confirmPassword']" type="password">
+                </mat-form-field>
+                <small *ngIf="passwordForm.controls['confirmPassword'].hasError('required') && passwordForm.controls['confirmPassword'].touched"
+                  class="mat-text-warn">Confirm your new password.</small>
+                <small *ngIf="passwordForm.controls['confirmPassword'].errors?.equalTo" class="mat-text-warn">Passwords do not match.</small>
+              </div>
+            </form>
+          </mat-card-content>
+        </mat-tab>
+      </mat-tab-group>
+      <hr>
+      <mat-card-actions>
+        <button mat-raised-button (click)="saveMe()" [disabled]="infoForm && !infoForm.dirty" class="shadow-none">Save</button>
+        <button mat-raised-button (click)="changePassword()" [disabled]="passwordForm && !passwordForm.dirty" class="shadow-none">Change Password</button>
+        <button mat-raised-button color="primary" (click)="cancel()">Cancel</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

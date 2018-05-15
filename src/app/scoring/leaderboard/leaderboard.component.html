@@ -1,0 +1,64 @@
+<div *ngIf="leaderboard">
+  <div fxLayout="row">
+    <div fxFill>
+      <table>
+        <tr>
+          <td colspan="2">
+            <button mat-icon-button color="primary" (click)="gotoScores()"><mat-icon>mode_edit</mat-icon></button>
+          </td>
+          <td colspan="9" class="course-name">
+            <h3>{{round.course.name}}</h3>
+          </td>
+          <td></td>
+          <td>
+            <button *ngIf="side==='front'" mat-icon-button color="primary" (click)="changeSide('back')"><mat-icon>arrow_forward</mat-icon></button>
+            <button *ngIf="side==='back'" mat-icon-button color="primary" (click)="changeSide('front')"><mat-icon>arrow_back</mat-icon></button>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2"></td>
+          <td *ngFor="let h of round.course.holes | sideFilter: side" class="hole">
+            {{h.holeNumber}}
+          </td>
+          <td colspan="2"></td>
+        </tr>
+        <tr>
+          <td class="handicap">Hdcp</td>
+          <td></td>
+          <td *ngFor="let h of round.course.holes | sideFilter: side" class="hole handicap">
+            {{h.handicap}}
+          </td>
+          <td class="hole-subtotal">{{side === 'front' ? 'OUT' : 'IN'}}</td>
+          <td class="hole-total">TOT</td>
+        </tr>
+        <tr class="scorecard-par-row">
+          <td>Par</td>
+          <td></td>
+          <td *ngFor="let h of round.course.holes | sideFilter: side" class="hole">
+            {{h.par}}
+          </td>
+          <td class="hole-subtotal">{{side === 'front' ? round.course.front9 : round.course.back9}}</td>
+          <td class="hole-total">{{round.course.par}}</td>
+        </tr>
+        <tr *ngFor="let player of leaderboard.players">
+          <td>{{player.name}}</td>
+          <td class="player-handicap">{{player.courseHandicap}}</td>
+          <td *ngFor="let hole of player.holes | sideFilter: side" [class]="net ? hole.netClass : hole.grossClass">
+            <span *ngIf="!net && hole.gross > 0">{{hole.gross}}</span>
+            <span *ngIf="net && hole.gross > 0">{{hole.net}}</span>
+          </td>
+          <td *ngIf="!net" class="hole-subtotal">{{side === 'front' ? player.totalFrontScore : player.totalBackScore}}</td>
+          <td *ngIf="net" class="hole-subtotal">{{side === 'front' ? player.totalFrontNetScore : player.totalBackNetScore}}</td>
+          <td *ngIf="!net" class="hole-total">{{player.totalScore}}</td>
+          <td *ngIf="net" class="hole-total">{{player.totalNetScore}}</td>
+        </tr>
+        <tr>
+          <td colspan="13"><mat-slide-toggle color="primary" [(ngModel)]="net">Net</mat-slide-toggle></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div fxLayout="row">
+    <button mat-button color="primary" (click)="randomScores()">Random</button>
+  </div>
+</div>

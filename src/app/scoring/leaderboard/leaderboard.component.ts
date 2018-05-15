@@ -1,0 +1,63 @@
+import { Component, OnInit } from '@angular/core';
+import { Round } from '../../models/round';
+import { Leaderboard } from '../../models/leaderboard';
+import { RoundService } from '../../services/round.service';
+import { ActivatedRoute, Router, Params } from '@angular/router';
+
+@Component({
+  selector: 'app-leaderboard',
+  templateUrl: './leaderboard.component.html',
+  styleUrls: ['./leaderboard.component.css']
+})
+export class LeaderboardComponent implements OnInit {
+
+  round: Round;
+  leaderboard: Leaderboard;
+  side: string;
+  net: boolean;
+
+  constructor(
+    private roundService: RoundService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
+
+  ngOnInit() {
+    console.log('leaderboard init');
+    this.route.params
+      .subscribe((p: Params) => {
+        if (this.roundService.hasRound(p['code'])) {
+          this.roundService.currentRound.subscribe(round => {
+            this.round = round;
+            this.side = p['side'];
+            this.roundService.getLeaderboard()
+              .subscribe(leaderboard => {
+                this.leaderboard = leaderboard;
+              });
+          });
+        }
+      });
+  }
+
+  changeSide(side: string): void {
+    this.router.navigate(['/scoring', this.round.code, 'leaderboard', side, 0]);
+  }
+
+  gotoScores(): void {
+    if (this.roundService.lastHole && this.roundService.currentGroup) {
+      const currentHole = this.roundService.lastHole.holeNumber < this.round.course.numberOfHoles ?
+        this.roundService.lastHole.holeNumber + 1 :
+        this.roundService.lastHole.holeNumber;
+      this.router.navigate(['/scoring', this.round.code, this.roundService.currentGroup.number, currentHole]);
+    }
+  }
+
+  randomScores(): void {
+    this.roundService.randomScores().subscribe(() => {
+      this.roundService.getLeaderboard()
+        .subscribe(leaderboard => {
+          this.leaderboard = leaderboard;
+        });
+    });
+  }
+}

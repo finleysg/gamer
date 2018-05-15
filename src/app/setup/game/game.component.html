@@ -1,0 +1,40 @@
+<div fxLayout="row" class="m-t-15" fxLayoutAlign="center none">
+  <h2>{{gameHeader}}</h2>
+</div>
+<div fxLayout="row" *ngIf="game">
+  <mat-card>
+    <mat-card-content>
+      <div fxLayout="column" *ngIf="gameTypes">
+        <mat-select class="partial-width-75 m-b-15" [(ngModel)]="game.gameType" (change)="updateGameType($event.value)" placeholder="Select a game">
+          <mat-option *ngFor="let gameType of gameTypes" [value]="gameType.id">{{gameType.name}}</mat-option>
+        </mat-select>
+        <mat-select class="partial-width-75 m-b-15" [(ngModel)]="game.scoringType" (change)="updateScoringType()" placeholder="Scoring System">
+          <mat-option *ngFor="let scoringType of scoringTypes" [value]="scoringType.id">{{scoringType.name}}</mat-option>
+        </mat-select>
+        <mat-checkbox [(ngModel)]="game.isNet" (change)="updateNetVsGross()">Use Handicaps (Net)</mat-checkbox>
+        <mat-input-container class="half-width m-t-15">
+          <input matInput placeholder="Bet/Buy-in/Point Value" [(ngModel)]="game.betValue" />
+        </mat-input-container>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+<div *ngIf="game">
+  <app-payouts *ngIf="game.scoringType === 'Payouts'" [game]="game" [players]="round.players.length"></app-payouts>
+</div>
+<div fxLayout="row" *ngIf="round && game">
+  <mat-card style="width: 100%">
+    <mat-card-header>
+      <mat-card-title>{{game.name}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <app-individual-game *ngIf="game.isIndividual" [teams]="game.teams" [allPlayers]="round.players"></app-individual-game>
+      <app-match-game *ngIf="game.isMatch" (change)="teamChange()" [teams]="game.teams" [players]="round.players"></app-match-game>
+      <app-team-game *ngIf="game.isTeam" (change)="teamChange()" [game]="game" [round]="round"></app-team-game>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="warn" (click)="delete()">Delete</button>
+      <button mat-raised-button color="primary" (click)="save()">Save</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

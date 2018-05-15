@@ -1,0 +1,32 @@
+<mat-toolbar class="main-header" color="primary">
+  <button (click)="toggleSidenav.emit()" mat-icon-button>
+    <mat-icon>menu</mat-icon>
+  </button>
+  <div class="branding">
+    <!-- <div class="logo"></div> -->
+  </div>
+  <div class="round-code" fxFlex>
+    <h1 *ngIf="currentRound">{{currentRound.code}}</h1>
+  </div>
+  <button [matMenuTriggerFor]="user" mat-icon-button class="ml-xs">
+    <mat-icon>person</mat-icon>
+  </button>
+  <mat-menu #user="matMenu" x-position="before">
+    <button *ngIf="currentUser && currentUser.isAuthenticated" [routerLink]="['/profile', 'settings']" mat-menu-item>
+      <mat-icon>settings</mat-icon>
+      Settings
+    </button>
+    <button *ngIf="currentUser && currentUser.isAuthenticated" [routerLink]="['/profile', 'edit']" mat-menu-item>
+      <mat-icon>account_box</mat-icon>
+      Profile
+    </button>
+    <button *ngIf="currentUser && currentUser.isAuthenticated" mat-menu-item (click)="logout()">
+      <mat-icon>exit_to_app</mat-icon>
+      Sign Out
+    </button>
+    <button *ngIf="currentUser && !currentUser.isAuthenticated" mat-menu-item [routerLink]="['session', 'signin']">
+      <mat-icon>cloud_done</mat-icon>
+      Sign In
+    </button>  
+  </mat-menu>
+</mat-toolbar>

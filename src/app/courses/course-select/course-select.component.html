@@ -1,0 +1,12 @@
+<div class="m-t-30" fxLayout="row" fxLayoutAlign="center none" >
+  <h2>Select or Create a Course</h2>
+</div>
+<div class="m-t-30" fxLayout="row" fxLayoutAlign="center none" >
+  <mat-select [(ngModel)]="selectedCourse" name="course" placeholder="Available Courses" class="partial-width-75">
+    <mat-option *ngFor="let course of courses" [value]="course">{{course.name}}</mat-option>
+  </mat-select>
+</div>
+<div class="m-t-30" fxLayout="row" fxLayoutAlign="center none" >
+  <button mat-raised-button color="primary" (click)="onNext()">Next</button>
+</div>
+<a mat-fab class="mat-fab-bottom-right m-r-10" color="warn" (click)="onNew()"><mat-icon>golf_course</mat-icon></a>

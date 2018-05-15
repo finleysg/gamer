@@ -1,0 +1,19 @@
+<mat-card>
+    <mat-toolbar color="warn">
+        <span fxFlex>Options</span>
+    </mat-toolbar>
+    <mat-card-content class="demo-checkbox">
+        <div class="pb-1">
+            <mat-checkbox [(ngModel)]="options.collapsed" (change)="sendOptions()">Collapsed Sidebar</mat-checkbox>
+        </div>
+        <div class="pb-1">
+            <mat-checkbox [(ngModel)]="options.compact" (change)="sendOptions()">Compact Sidebar</mat-checkbox>
+        </div>
+        <div class="pb-1">
+            <mat-checkbox [(ngModel)]="options.boxed" (change)="sendOptions()">Boxed Layout</mat-checkbox>
+        </div>
+        <div class="pb-1">
+            <mat-checkbox [(ngModel)]="options.dark" (change)="sendOptions()">Dark Mode</mat-checkbox>
+        </div>
+    </mat-card-content>
+</mat-card>

@@ -1,0 +1,32 @@
+<mat-card *ngIf="group && hole">
+  <mat-card-title>Group {{group.number}} Scoring</mat-card-title>
+  <mat-card-subtitle>Hole {{hole.holeNumber}} (Par {{hole.par}})</mat-card-subtitle>
+  <mat-card-content>
+    <div class="m-t-15" *ngFor="let score of scores">
+      <div fxLayout="row">
+        <div class="m-t-15" fxFlex="40">
+          <p>{{score.player.name}}</p>
+        </div>
+        <div fxFlex="10">
+          <button class="good" mat-icon-button (click)="updateScore(score, -1)"><mat-icon class="good-icon">arrow_drop_down</mat-icon></button>
+        </div>
+        <div fxFlex="15" [class]="getScoreClass(score)">
+          <div>
+            <p class="score">{{score.noScore ? 'X' : score.grossScore}}</p>
+          </div>
+        </div>
+        <div fxFlex="10">
+          <button class="bad" mat-icon-button (click)="updateScore(score, 1)"><mat-icon class="bad-icon">arrow_drop_up</mat-icon></button>
+        </div>
+        <div fxFlex="25">
+          <button class="quit" mat-icon-button (click)="toggleNoScore(score)"><mat-icon [color]="'warn'">block</mat-icon></button>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button color="primary" (click)="previousHole()">Previous</button>
+    <button mat-button color="accent" (click)="toLeaderboard()">Leaderboard</button>
+    <button mat-button color="primary" (click)="nextHole()">Next</button>
+  </mat-card-actions>
+</mat-card>

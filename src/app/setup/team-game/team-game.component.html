@@ -1,0 +1,56 @@
+<div>
+  <div class="m-b-30" *ngFor="let teamNumber of teamNumbers">
+    <div fxLayout="row" fxLayoutGap="5px" *ngFor="let team of game.teams | teamFilter: teamNumber">
+      <div fxFlex="10">
+        {{team.teamNumber}}
+      </div>
+      <div fxFlex="50">
+        <mat-select [(ngModel)]="team.playerId" (change)="teamChange(team.playerId)" placeholder="Player">
+          <mat-option *ngFor="let player of round.players" [value]="player.id">{{player.name}}</mat-option>
+        </mat-select>
+      </div>
+      <div fxFlex="20">
+        <mat-input-container class="partial-width-75">
+          <input matInput placeholder="Shots" [(ngModel)]="team.strokes" />
+        </mat-input-container>
+      </div>
+      <div fxFlex="10">
+        <button mat-icon-button color="warn" (click)="removePlayer(team)">
+          <mat-icon>remove_circle_outline</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="mb-1" fxLayout="row" fxLayoutGap="10px">
+      <div fxFlex="50">
+        <a class="relative" (click)="addPlayer(teamNumber)" *ngIf="game.teams.length < round.players.length">
+          <mat-icon color="accent" class="m-r-15">add_circle</mat-icon>
+          <span>Add player</span>
+        </a>
+      </div>
+      <div fxFlex="50">
+        <a class="relative" (click)="removeTeam(teamNumber)">
+          <mat-icon color="warn" class="m-r-15">remove_circle</mat-icon>
+          <span>Remove team</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<div fxLayout="row">
+  <div fxFlex.gt-sm="25" fxFlex.gt-xs="50" fxFlex="100">
+    <mat-nav-list class="navigation">
+      <mat-list-item *ngIf="round.groups.length > 1 && game.teams.length === 0">
+        <a class="relative" (click)="assignByGroups()">
+          <mat-icon class="m-r-15">group_add</mat-icon>
+          <span>Teams are groups</span>
+        </a>
+      </mat-list-item>
+      <mat-list-item *ngIf="game.teams.length < round.players.length">
+        <a class="relative" (click)="addTeam()">
+          <mat-icon class="m-r-15">group_add</mat-icon>
+          <span>Add a new team</span>
+        </a>
+      </mat-list-item>
+    </mat-nav-list>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Payouts</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div fxLayout="row" fxLayoutGap="10px" *ngFor="let payout of game.payouts">
+      <div fxFlex="20">
+        {{displayPlace(payout.place)}}
+      </div>
+      <div fxFlex="30">
+        <mat-input-container class="full-width">
+          <input matInput placeholder="Percent" (change)="calculatePayouts()" [(ngModel)]="payout.percentage" />
+        </mat-input-container>
+      </div>
+      <div fxFlex="40">
+        <mat-input-container class="full-width">
+          <input matInput placeholder="Dollars" [(ngModel)]="payout.amount" />
+        </mat-input-container>
+      </div>
+      <div fxFlex="10">
+        <button mat-icon-button color="warn" (click)="removePayout()">
+          <mat-icon>remove_circle</mat-icon>
+        </button>
+      </div>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button (click)="addPayout()">Add Payout (1st, 2nd, ...)</button>
+  </mat-card-actions>
+</mat-card>

@@ -1,1 +1,195 @@
 /* You can add global styles to this file, and also import other style files */
+.color-green {
+    color: green;
+  }
+  .color-red {
+    color: red;
+  }
+  .color-orange {
+    color: orange;
+  }
+  
+  .full-width {
+    width: 100% !important;
+  }
+  .half-width {
+    width: 50% !important;
+  }
+  .partial-width-25 {
+    width: 25% !important;
+  }
+  .partial-width-75 {
+    width: 75% !important;
+  }
+  
+  .clickable {
+    cursor: pointer;
+  }
+  
+  .external-link a {
+    text-decoration: none;
+  }
+  
+  .external-link md-icon {
+    font-size: 12px;
+  }
+  
+  .fill-space {
+    flex: 1 1 auto;
+  }
+  
+  .m-15 {
+    margin: 15px;
+  }
+  .m-20 {
+    margin: 20px;
+  }
+  .m-30 {
+    margin: 30px;
+  }
+  
+  .m-t-15 {
+    margin-top: 15px !important;
+  }
+  
+  .m-t-20 {
+    margin-top: 20px !important;
+  }
+  
+  .m-t-30 {
+    margin-top: 30px !important;
+  }
+  
+  
+  .m-b-15 {
+    margin-bottom: 15px !important;
+  }
+  
+  .m-b-20 {
+    margin-bottom: 20px !important;
+  }
+  
+  .m-b-30 {
+    margin-bottom: 30px !important;
+  }
+  
+  .m-l-15 {
+    margin-left: 15px !important;
+  }
+  
+  .m-l-20 {
+    margin-left: 20px !important;
+  }
+  
+  .m-l-30 {
+    margin-left: 30px !important;
+  }
+  
+  .m-r-15 {
+    margin-right: 15px !important;
+  }
+  
+  .m-r-20 {
+    margin-right: 20px !important;
+  }
+  
+  .m-r-30 {
+    margin-right: 30px !important;
+  }
+  
+  .p-t-5 {
+    padding-top: 5 !important;
+  }
+  
+  .p-t-10 {
+    padding-top: 10px !important;
+  }
+  
+  .p-t-15 {
+    padding-top: 15px !important;
+  }  
+
+  .p-r-5 {
+    padding-right: 5 !important;
+  }
+  
+  .p-r-10 {
+    padding-right: 10px !important;
+  }
+  
+  .p-r-15 {
+    padding-right: 15px !important;
+  }
+  
+  .par {
+    text-align: center;
+    vertical-align: middle;
+    border: thin solid lightgray;
+  }
+  .birdie {
+    text-align: center;
+    vertical-align: middle;
+    border: thin solid lightgray;
+    background: rgba(0,255,0,.5);
+  }
+  .eagle {
+    text-align: center;
+    vertical-align: middle;
+    border: thin solid lightgray;
+    background: rgba(0,255,0,.8);
+  }
+  .bogey {
+    text-align: center;
+    vertical-align: middle;
+    border: thin solid lightgray;
+    background: rgba(255,153,0,.7);
+  }
+  .big-number {
+    text-align: center;
+    vertical-align: middle;
+    border: thin solid lightgray;
+    background: rgba(255,0,0,.5);
+  }
+  .no-score {
+    text-align: center;
+    vertical-align: middle;
+    border: thin solid lightgray;
+    background: rgba(255,0,0,.7);
+  }
+  
+  .hole {
+    height: 30px;
+    width: 40px;
+    text-align: center;
+    vertical-align: middle;
+    border: thin solid lightgray;
+  }
+  .hole-total {
+    height: 30px;
+    width: 50px;
+    text-align: center;
+    vertical-align: middle;
+    border: thin solid lightgray;
+    font-weight: bold;
+  }
+  .hole-subtotal {
+    height: 30px;
+    width: 50px;
+    text-align: center;
+    vertical-align: middle;
+    border: thin solid lightgray;
+  }
+  .handicap {
+    font-size: .9em;
+    font-style: italic;
+  }
+  .player-handicap {
+    font-size: .9em;
+    font-style: italic;
+    text-align: right;
+    padding-right: 12px;
+  }
+  .scorecard-par-row td {
+    border-bottom: 1px solid #303f9f;
+  }
+  

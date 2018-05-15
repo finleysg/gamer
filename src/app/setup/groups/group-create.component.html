@@ -1,0 +1,57 @@
+<div fxLayout="row" fxLayoutAlign="center none">
+  <h2>Groups and Players</h2>
+</div>
+<div class="m-t-15" *ngFor="let group of round.groups">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Group {{ group.number }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div *ngFor="let player of group.players" fxLayout="row">
+        <div fxFlex="15">
+          <button mat-icon-button color="warn" (click)="removePlayer(group, player)">
+            <mat-icon>remove_circle</mat-icon>
+          </button>
+        </div>
+        <div fxFlex="50">
+          <mat-input-container class="partial-width-75">
+            <input matInput [(ngModel)]="player.name" placeholder="player" floatPlaceholder="never" />
+          </mat-input-container>
+        </div>
+        <div fxFlex="20">
+          <mat-input-container class="partial-width-75">
+            <input matInput [(ngModel)]="player.handicapIndex" placeholder="hcp" />
+          </mat-input-container>
+        </div>
+        <div fxFlex="15" *ngIf="friends">
+          <button [matMenuTriggerFor]="friendMenu" mat-icon-button color="primary">
+            <mat-icon>person_add</mat-icon>
+          </button>
+            <mat-menu #friendMenu="matMenu" x-position="before">
+              <button *ngFor="let friend of friends" mat-menu-item (click)="assignFriend(friend, player)">
+                {{friend.name}}
+              </button>  
+            </mat-menu>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button color="primary" (click)="addPlayer(group)" mat-button>Add Player</button>
+      <button (click)="assignYourself(group)" mat-button>Assign Yourself</button>
+      <button *ngIf="group.number > 0" (click)="removeGroup(group.number)" color="warn" mat-button>Delete</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+<div class="m-t-15" fxLayout="row" fxLayoutAlign="none center">
+  <div fxFlex="10">
+    <button mat-icon-button color="accent" (click)="addGroup()">
+      <mat-icon>add_circle</mat-icon>
+    </button>
+  </div>
+  <div fxFlex>
+    Add group
+  </div>
+</div>
+<div class="m-t-30" fxLayout="row" fxLayoutAlign="center none">
+  <button mat-raised-button color="primary" (click)="onNext()">Save Groups</button>
+</div>

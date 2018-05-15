@@ -1,0 +1,36 @@
+<div class="m-t-30" fxLayout="row" fxLayoutAlign="center none" >
+    <h1 class="mat-primary">GAMER</h1>
+</div>  
+<div fxLayout="row" fxLayoutAlign="center none" >
+    <h2 class="mat-accent">Scoring Assistant</h2>
+</div>
+<div *ngIf="!user || !user.isAuthenticated">
+    <div class="m-t-30" fxLayout="row" fxLayoutAlign="center none" >
+        <button mat-raised-button color="accent" [routerLink]="['session', 'signin']">Sign In</button>
+    </div>
+    <div class="m-t-30" fxLayout="row" fxLayoutAlign="center none" >
+        <h3>View a round:</h3>
+    </div> 
+    <div class="m-t-15" fxLayout="row" fxLayoutAlign="center none" >
+        <mat-input-container class="half-width">
+            <input matInput placeholder="Round Code" name="roundCode" [(ngModel)]="roundCode" />
+        </mat-input-container>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center none" >
+        <button mat-raised-button color="primary" (click)="findRound()">View Round</button>
+    </div>
+</div>
+<div *ngIf="user && user.isAuthenticated">
+    <div class="m-t-30" fxLayout="row" fxLayoutAlign="center none" >
+        <h3>Join a round:</h3>
+    </div> 
+    <div class="m-t-15" fxLayout="row" fxLayoutAlign="center none" >
+        <mat-input-container class="half-width">
+            <input matInput placeholder="Round Code" name="roundCode" [(ngModel)]="roundCode" />
+        </mat-input-container>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center none" >
+        <button mat-raised-button color="primary" (click)="findRound()">Join Round</button>
+    </div>
+    <a mat-fab class="mat-fab-bottom-right m-r-10" color="warn" (click)="newRound()"><mat-icon>add</mat-icon></a>
+</div>
