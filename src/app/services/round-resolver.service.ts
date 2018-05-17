@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { Round } from '../models/round';
 import { RoundService } from './round.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 
 @Injectable()

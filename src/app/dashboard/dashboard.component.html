@@ -12,9 +12,9 @@
         <h3>View a round:</h3>
     </div> 
     <div class="m-t-15" fxLayout="row" fxLayoutAlign="center none" >
-        <mat-input-container class="half-width">
+        <mat-form-field class="half-width">
             <input matInput placeholder="Round Code" name="roundCode" [(ngModel)]="roundCode" />
-        </mat-input-container>
+        </mat-form-field>
     </div>
     <div fxLayout="row" fxLayoutAlign="center none" >
         <button mat-raised-button color="primary" (click)="findRound()">View Round</button>
@@ -25,9 +25,9 @@
         <h3>Join a round:</h3>
     </div> 
     <div class="m-t-15" fxLayout="row" fxLayoutAlign="center none" >
-        <mat-input-container class="half-width">
+        <mat-form-field class="half-width">
             <input matInput placeholder="Round Code" name="roundCode" [(ngModel)]="roundCode" />
-        </mat-input-container>
+        </mat-form-field>
     </div>
     <div fxLayout="row" fxLayoutAlign="center none" >
         <button mat-raised-button color="primary" (click)="findRound()">Join Round</button>

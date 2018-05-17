@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { Course } from '../../models/course';
 import { RoundService } from '../../services/round.service';
 import { CourseService } from '../../services/course.service';

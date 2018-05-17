@@ -8,14 +8,14 @@
         {{displayPlace(payout.place)}}
       </div>
       <div fxFlex="30">
-        <mat-input-container class="full-width">
+        <mat-form-field class="full-width">
           <input matInput placeholder="Percent" (change)="calculatePayouts()" [(ngModel)]="payout.percentage" />
-        </mat-input-container>
+        </mat-form-field>
       </div>
       <div fxFlex="40">
-        <mat-input-container class="full-width">
+        <mat-form-field class="full-width">
           <input matInput placeholder="Dollars" [(ngModel)]="payout.amount" />
-        </mat-input-container>
+        </mat-form-field>
       </div>
       <div fxFlex="10">
         <button mat-icon-button color="warn" (click)="removePayout()">

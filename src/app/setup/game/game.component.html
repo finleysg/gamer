@@ -12,9 +12,9 @@
           <mat-option *ngFor="let scoringType of scoringTypes" [value]="scoringType.id">{{scoringType.name}}</mat-option>
         </mat-select>
         <mat-checkbox [(ngModel)]="game.isNet" (change)="updateNetVsGross()">Use Handicaps (Net)</mat-checkbox>
-        <mat-input-container class="half-width m-t-15">
+        <mat-form-field class="half-width m-t-15">
           <input matInput placeholder="Bet/Buy-in/Point Value" [(ngModel)]="game.betValue" />
-        </mat-input-container>
+        </mat-form-field>
       </div>
     </mat-card-content>
   </mat-card>

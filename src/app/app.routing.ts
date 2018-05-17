@@ -12,7 +12,8 @@ const AppRoutes: Routes = [
       { path: 'profile', loadChildren: './profile/profile.module#ProfileModule' },
       { path: 'courses', loadChildren: './courses/courses.module#CoursesModule' },
       { path: 'setup', loadChildren: './setup/setup.module#SetupModule' },
-      { path: 'scoring', loadChildren: './scoring/scoring.module#ScoringModule' }
+      { path: 'scoring', loadChildren: './scoring/scoring.module#ScoringModule' },
+      { path: 'results', loadChildren: './results/results.module#ResultsModule' }
     ]
   },
   {

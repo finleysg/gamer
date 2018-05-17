@@ -1,7 +1,6 @@
 import { Injectable, ErrorHandler } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable ,  Subject } from 'rxjs';
 
 @Injectable()
 export class AppErrorHandler extends ErrorHandler {

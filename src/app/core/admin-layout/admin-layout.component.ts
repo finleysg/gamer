@@ -1,13 +1,12 @@
 import { Component, ElementRef, NgZone, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/operator/filter';
-
+import { Subscription } from 'rxjs';
 import { PerfectScrollbarConfigInterface, PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
 import { UserService } from '../../services/user.service';
 import { Options } from '../../models/options';
 import { AppErrorHandler } from '../../services/app-error-handler.service';
 import { MatSnackBar } from '@angular/material';
+import { filter } from 'rxjs/operators';
 
 const SMALL_WIDTH_BREAKPOINT = 960;
 
@@ -46,11 +45,12 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
 
     this.url = this.router.url;
 
-    this._router = this.router.events.filter(event => event instanceof NavigationEnd).subscribe((event: NavigationEnd) => {
-      document.querySelector('.app-inner > .mat-drawer-content > div').scrollTop = 0;
-      this.url = event.url;
-      this.runOnRouteChange();
-    });
+    this._router = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
+        document.querySelector('.app-inner > .mat-drawer-content > div').scrollTop = 0;
+        this.url = event.url;
+        this.runOnRouteChange();
+      });
 
     this.userService.options.subscribe(o => this.options = o);
 

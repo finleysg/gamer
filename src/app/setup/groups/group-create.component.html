@@ -14,14 +14,14 @@
           </button>
         </div>
         <div fxFlex="50">
-          <mat-input-container class="partial-width-75">
+          <mat-form-field class="partial-width-75">
             <input matInput [(ngModel)]="player.name" placeholder="player" floatPlaceholder="never" />
-          </mat-input-container>
+          </mat-form-field>
         </div>
         <div fxFlex="20">
-          <mat-input-container class="partial-width-75">
+          <mat-form-field class="partial-width-75">
             <input matInput [(ngModel)]="player.handicapIndex" placeholder="hcp" />
-          </mat-input-container>
+          </mat-form-field>
         </div>
         <div fxFlex="15" *ngIf="friends">
           <button [matMenuTriggerFor]="friendMenu" mat-icon-button color="primary">

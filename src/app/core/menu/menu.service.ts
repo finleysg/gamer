@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RoundService } from '../../services/round.service';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { Round } from '../../models/round';
 
 export interface BadgeItem {
@@ -114,7 +113,7 @@ export class MenuService {
         children: []
       };
       round.games.forEach(game => {
-        resultMenu.children.push({state: [round.code, game.id.toString()], name: game.name});
+        resultMenu.children.push({state: [round.code, 'game', game.id.toString()], name: game.name});
       });
       return resultMenu;
     }

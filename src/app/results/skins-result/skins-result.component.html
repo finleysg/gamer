@@ -1,0 +1,32 @@
+<div fxLayout="row">
+  <div fxFlex="100">
+    <h4>Skins Won</h4>
+    <div class="results-container mat-elevation-z8">
+      <table mat-table #table [dataSource]="dataSource">
+        <ng-container matColumnDef="holeNumber">
+          <th mat-header-cell *matHeaderCellDef> Hole </th>
+          <td mat-cell *matCellDef="let skin"> {{skin.holeNumber}} </td>
+        </ng-container>
+        <ng-container matColumnDef="score">
+          <th mat-header-cell *matHeaderCellDef> Score </th>
+          <td mat-cell *matCellDef="let skin"> {{skin.isNet ? 'Net' : ''}} {{skin.score}} </td>
+        </ng-container>
+        <ng-container matColumnDef="playerNames">
+          <th mat-header-cell *matHeaderCellDef> Player(s) </th>
+          <td mat-cell *matCellDef="let skin"> {{skin.playerNames}} </td>
+        </ng-container>
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef> Amount </th>
+          <td mat-cell *matCellDef="let skin"> {{skin.amount | currency:'USD'}} </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </div>
+</div>
+<div fxLayout="row" class="m-t-20">
+  <div fxFlex="100">
+    <h4>Skins Summary</h4>
+  </div>
+</div>

@@ -4,7 +4,7 @@ import { User, Member, PublicMember } from '../models/user';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { MatSnackBar } from '@angular/material';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { Location } from '@angular/common';
 

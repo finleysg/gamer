@@ -73,6 +73,15 @@ export class Game {
     return this.competitionType === 'individual';
   }
 
+  // TODO: better strategy for determining game type groupings
+  get isSkins(): boolean {
+    return this.gameType === 4 || this.gameType === 5;
+  }
+
+  get isBestBall(): boolean {
+    return this.gameType === 2 || this.gameType === 6;
+  }
+
   addPayout(): void {
     if (!this.payouts) {
       this.payouts = [];

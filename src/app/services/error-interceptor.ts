@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { AppErrorHandler } from './app-error-handler.service';
 
 @Injectable()
@@ -24,7 +23,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         let message: string;
         if (err instanceof HttpErrorResponse) {
             if (err.status === 0) {
-                message = `Could not reach the bhmc server because your internet connection 
+                message = `Could not reach the bhmc server because your internet connection
                            was lost, the connection timed out, or the server is not responding.`;
             } else {
                 const body = err.error || {};
@@ -47,6 +46,6 @@ export class ErrorInterceptor implements HttpInterceptor {
             message = err.message ? err.message : err.toString();
         }
 
-        return ErrorObservable.create(message);
+        return throwError(message);
     }
 }

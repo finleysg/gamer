@@ -114,13 +114,16 @@ export class Round {
 
   // To auto-include everyone for an individual game
   allPlay(): Team[] {
-    return this.players.map(p => {
+    const teams = this.players.map(p => {
       const team = new Team();
       team.playerId = p.id;
-      // team.strokes = this.roundService.round.course.calculateHandicap(p.handicapIndex);
       team.teamNumber = 0;
       return team;
     });
+    teams.forEach((t, idx) => {
+      t.teamNumber = idx + 1;
+    });
+    return teams;
   }
 
   teamsFromGroups(): Team[] {
@@ -129,7 +132,6 @@ export class Round {
       group.players.forEach(player => {
         const team = new Team();
         team.playerId = player.id;
-        // team.strokes = this.roundService.round.course.calculateHandicap(player.handicapIndex);
         team.teamNumber = group.number;
         teams.push(team);
       });

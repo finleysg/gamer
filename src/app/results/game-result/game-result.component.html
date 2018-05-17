@@ -1,0 +1,16 @@
+<div fxLayout="row" *ngIf="round && game">
+  <mat-card style="width: 100%">
+    <mat-card-header>
+      <mat-card-title>{{game.name}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <app-skins-result *ngIf="game.isSkins" [results]="results"></app-skins-result>
+      <app-best-ball-result *ngIf="game.isBestBall" [results]="results"></app-best-ball-result>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button (click)="previousGame()">Previous</button>
+      <button mat-raised-button color="warn" (click)="refreshResults()">Refresh</button>
+      <button mat-raised-button (click)="nextGame()">Next</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
