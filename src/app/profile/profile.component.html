@@ -1,6 +1,5 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row></mat-toolbar-row>
-  <mat-toolbar-row></mat-toolbar-row>
 </mat-toolbar>
 
 <div fxLayout="row wrap" fxLayoutAlign="center start">
@@ -96,9 +95,9 @@
       </mat-tab-group>
       <hr>
       <mat-card-actions>
-        <button mat-raised-button (click)="saveMe()" [disabled]="infoForm && !infoForm.dirty" class="shadow-none">Save</button>
+        <button mat-raised-button color="primary" (click)="saveMe()" [disabled]="infoForm && !infoForm.dirty" class="shadow-none">Save</button>
         <button mat-raised-button (click)="changePassword()" [disabled]="passwordForm && !passwordForm.dirty" class="shadow-none">Change Password</button>
-        <button mat-raised-button color="primary" (click)="cancel()">Cancel</button>
+        <button mat-raised-button (click)="cancel()">Close</button>
       </mat-card-actions>
     </mat-card>
   </div>

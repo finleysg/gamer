@@ -1,6 +1,9 @@
 <mat-card *ngIf="group && hole">
   <mat-card-title>Group {{group.number}} Scoring</mat-card-title>
   <mat-card-subtitle>Hole {{hole.holeNumber}} (Par {{hole.par}})</mat-card-subtitle>
+  <button class="mat-fab-top-right m-r-10 m-t-50" color="accent" mat-fab (click)="jumpToHole()">
+    <mat-icon>golf_course</mat-icon>
+  </button>
   <mat-card-content>
     <div class="m-t-15" *ngFor="let score of scores">
       <div fxLayout="row">

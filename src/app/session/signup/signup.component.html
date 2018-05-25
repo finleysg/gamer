@@ -6,9 +6,15 @@
           <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <div class="text-xs-center pb-1">
               <img src="assets/images/logo-dark.svg" alt=""/>
-              <p class="mat-text-muted">Create an app id to continue.</p>
+              <p class="mat-text-muted">Create a free account to continue.</p>
             </div>
             <div fxLayout="column"  fxLayoutAlign="space-around">
+              <div class="pb-1">
+                <mat-form-field style="width: 100%">
+                  <input matInput placeholder="User name" type="text" [formControl]="form.controls['username']">
+                </mat-form-field>
+                <small *ngIf="form.controls['username'].hasError('required') && form.controls['username'].touched" class="mat-text-warn">You must include user name.</small>
+              </div>
               <div class="pb-1">
                 <mat-form-field style="width: 100%">
                   <input matInput placeholder="Email address" type="email" [formControl]="form.controls['email']">
@@ -29,14 +35,14 @@
                 <small *ngIf="form.controls['confirmPassword'].hasError('required') && form.controls['confirmPassword'].touched" class="mat-text-warn">You must include confirm password.</small>
                 <small *ngIf="form.controls['confirmPassword'].errors?.equalTo" class="mat-text-warn">Passwords do not math.</small>
               </div>
-              <div class="pb-1">
+              <!-- <div class="pb-1">
                 <mat-checkbox>I have read and agree to the terms of service.</mat-checkbox>
-              </div>
+              </div> -->
               <button mat-raised-button color="primary" class="btn-block" type="submit" [disabled]="!form.valid">Create your account</button>
             </div>
             <div class="pt-1 pb-1 text-xs-center">
               <a [routerLink]="['/session/forgot']">Forgot password?</a>&nbsp;&nbsp;&nbsp;&nbsp;
-              <a [routerLink]="['/session/signin']">Access your account.</a>
+              <a [routerLink]="['/session/signin']">Sign in</a>
             </div>
           </form>
         </mat-card-content>

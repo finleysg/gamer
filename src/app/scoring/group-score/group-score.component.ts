@@ -5,6 +5,8 @@ import { Group } from '../../models/group';
 import { Hole } from '../../models/hole';
 import { Score } from '../../models/score';
 import { RoundService } from '../../services/round.service';
+import { MatDialog } from '@angular/material';
+import { JumpDialogComponent } from '../jump-dialog/jump-dialog.component';
 
 @Component({
   selector: 'app-group-score',
@@ -21,7 +23,8 @@ export class GroupScoreComponent implements OnInit {
   constructor(
     private roundService: RoundService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -38,22 +41,6 @@ export class GroupScoreComponent implements OnInit {
               });
           });
       });
-    // this.route.params
-    //   .subscribe((p: Params) => {
-    //     if (this.roundService.hasRound(p['code'])) {
-    //       this.roundService.currentRound.subscribe(round => {
-    //         this.round = round;
-    //         this.group = round.groups.find(g => g.number === +p['group']);
-    //         this.hole = round.course.holes.find(h => h.holeNumber === +p['hole']);
-    //         this.roundService.groupScoresByHole(this.group, this.hole)
-    //           .subscribe(scores => {
-    //             this.scores = scores;
-    //           });
-    //       });
-    //     } else {
-    //       // TODO: would we support deep links here?
-    //     }
-    //   });
   }
 
   updateScore(score: Score, amount: number): void {
@@ -105,11 +92,25 @@ export class GroupScoreComponent implements OnInit {
 
   toLeaderboard(): void {
     this.roundService.saveScores(this.scores.filter(s => s.dirty));
-    this.router.navigate(['leaderboard', this.round.code, 'front', 0]);
+    const side = (this.hole.holeNumber < 10) ? 'front' : 'back';
+    this.router.navigate(['/scoring', this.round.code, 'leaderboard', side, 0]);
+  }
+
+  jumpToHole(): void {
+      const dialogRef = this.dialog.open(JumpDialogComponent, {
+        width: '240px',
+        data: { holes: this.round.course.holes, group: this.group }
+      });
+
+      dialogRef.afterClosed().subscribe(hole => {
+        this.roundService.saveScores(this.scores.filter(s => s.dirty));
+        this.router.navigate(['/scoring', this.round.code, 'hole', this.group.number, hole]);
+      });
   }
 
   // TODO: use a deactivate guard to save?
   saveScores(): boolean {
+    this.roundService.saveScores(this.scores.filter(s => s.dirty));
     return true;
   }
 }

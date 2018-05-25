@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, forkJoin } from 'rxjs';
+import { BehaviorSubject, Observable, forkJoin, of } from 'rxjs';
 import { CourseService } from './course.service';
 import { Round } from '../models/round';
 import { Course } from '../models/course';
@@ -15,6 +15,7 @@ import { Hole } from '../models/hole';
 import { Leaderboard } from '../models/leaderboard';
 import { GameType } from '../models/gameType';
 import { SkinResult, BestBallResult, GameResult } from '../models/results';
+import { UserService } from './user.service';
 
 @Injectable()
 export class RoundService extends BaseService {
@@ -34,6 +35,7 @@ export class RoundService extends BaseService {
 
   constructor(
     private courseService: CourseService,
+    private userService: UserService,
     private http: HttpClient
   ) {
     super();
@@ -55,6 +57,18 @@ export class RoundService extends BaseService {
 
   get currentGroup(): Group {
     return this._currentGroup;
+  }
+
+  myRounds(): Observable<Round[]> {
+    if (this.userService.user.isAuthenticated) {
+      return this.http.get(this.resource).pipe(
+        map((json: any[]) => {
+          return json.map(r => new Round().fromJson(r));
+        })
+      );
+    } else {
+      return of([]);
+    }
   }
 
   createRound(course: Course): Observable<Round> {
@@ -219,7 +233,7 @@ export class RoundService extends BaseService {
     const actions = [];
     scores.forEach(s => {
       if (s.id) {
-        actions.push(this.http.put(`${this.scoreResource}${s.id}`, s.toJson(), {
+        actions.push(this.http.put(`${this.scoreResource}${s.id}/`, s.toJson(), {
           headers: new HttpHeaders().set('Content-Type', 'application/json'),
         }));
       } else {
@@ -295,7 +309,7 @@ export class RoundService extends BaseService {
     return this.http.get(`${this.resultsResource}results/${game.id}/`).pipe(
       map((json: any) => {
         return json.map(o => {
-          const result = new SkinResult().fromJson(o);
+          const result = new BestBallResult().fromJson(o);
           const teams = game.teams.filter(t => t.teamNumber === result.teamNumber);
           result.players = this._currentRound.players.filter(p => {
             return teams.findIndex(t => t.playerId === p.id) >= 0;

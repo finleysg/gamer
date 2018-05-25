@@ -3,7 +3,7 @@
     <mat-icon>menu</mat-icon>
   </button>
   <div class="branding">
-    <!-- <div class="logo"></div> -->
+    <div class="logo"></div>
   </div>
   <div class="round-code" fxFlex>
     <h1 *ngIf="currentRound">{{currentRound.code}}</h1>
@@ -12,6 +12,8 @@
     <mat-icon>person</mat-icon>
   </button>
   <mat-menu #user="matMenu" x-position="before">
+    <span mat-menu-item>{{ currentUser.isAuthenticated ? currentUser.firstName : 'Guest' }}</span>
+    <mat-divider></mat-divider>
     <button *ngIf="currentUser && currentUser.isAuthenticated" [routerLink]="['/profile', 'settings']" mat-menu-item>
       <mat-icon>settings</mat-icon>
       Settings
@@ -27,6 +29,6 @@
     <button *ngIf="currentUser && !currentUser.isAuthenticated" mat-menu-item [routerLink]="['session', 'signin']">
       <mat-icon>cloud_done</mat-icon>
       Sign In
-    </button>  
+    </button>
   </mat-menu>
 </mat-toolbar>

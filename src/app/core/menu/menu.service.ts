@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RoundService } from '../../services/round.service';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, forkJoin } from 'rxjs';
 import { Round } from '../../models/round';
 
 export interface BadgeItem {
@@ -27,39 +27,60 @@ export interface Menu {
 export class MenuService {
 
   private _menuSource: BehaviorSubject<Menu[]>;
+  private _rounds: Round[];
+  private _currentRound: Round;
 
   constructor(
     private roundService: RoundService
   ) {
     this._menuSource = new BehaviorSubject<Menu[]>([]);
-    this.roundService.currentRound.subscribe(round => this.menuBuilder(round));
+    this.roundService.myRounds().subscribe(rounds => {
+      this._rounds = rounds;
+      this.menuBuilder();
+    });
+    this.roundService.currentRound.subscribe(round => {
+      this._currentRound = round;
+      this.menuBuilder();
+    });
   }
 
   getMenu(): Observable<Menu[]> {
     return this._menuSource.asObservable();
   }
 
-  menuBuilder(round: Round): void {
+  menuBuilder(): void {
     const menu = [
       {
         state: [''],
         name: 'Home',
         type: 'link',
         icon: 'home'
-      },
-      {
-        state: ['my-rounds'],
-        name: 'My Rounds',
-        type: 'link',
-        icon: 'list'
       }
     ];
-    if (round.code) {
-      menu.push(this.setupMenu(round));
-      menu.push(this.scoringMenu(round));
-      menu.push(this.resultsMenu(round));
+    if (this._rounds && this._rounds.length > 0) {
+      menu.push(this.myRoundsMenu(this._rounds));
+    }
+    if (this._currentRound && this._currentRound.code) {
+      menu.push(this.setupMenu(this._currentRound));
+      menu.push(this.scoringMenu(this._currentRound));
+      menu.push(this.resultsMenu(this._currentRound));
     }
     this._menuSource.next(menu);
+  }
+
+  myRoundsMenu(rounds: Round[]): Menu {
+    const roundsMenu = {
+      state: ['setup'],
+      name: 'My Rounds',
+      type: 'sub',
+      icon: 'list',
+      children: []
+    };
+    rounds.forEach(round => {
+      roundsMenu.children.push({state: [round.code, 'groups'],
+                                name: `${round.code.toUpperCase()} (${round.created.format('MMM D')})`});
+    });
+    return roundsMenu;
   }
 
   setupMenu(round: Round): Menu {

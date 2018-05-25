@@ -84,8 +84,8 @@ export class ProfileComponent implements OnInit {
 
   saveMe(): void {
     this.userService.updateAccount({
-      'firstName': this.infoForm.get('firstName').value,
-      'lastName': this.infoForm.get('lastName').value,
+      'first_name': this.infoForm.get('firstName').value,
+      'last_name': this.infoForm.get('lastName').value,
       'email': this.infoForm.get('email').value,
       'username': this.infoForm.get('userName').value,
       'member': {

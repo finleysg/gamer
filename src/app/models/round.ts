@@ -3,12 +3,13 @@ import { Group } from './group';
 import { Game } from './game';
 import { Player } from './player';
 import { Team } from './team';
+import * as moment from 'moment';
 
 export class Round {
   id: number;
   code: string;
-  created: any; // TODO: moment
-  expires: any; // TODO: moment
+  created: moment.Moment;
+  completed: boolean;
   course: Course;
   groups: Group[] = [];
   games: Game[] = [];
@@ -182,8 +183,8 @@ export class Round {
     this.id = json.id;
     this.course = course;
     this.code = json.code;
-    this.created = json.created;
-    this.expires = json.expires;
+    this.created = moment(json.created);
+    this.completed = json.is_complete;
     if (json.groups) {
       json.groups.forEach(group => {
         this.groups.push(new Group().fromJson(group));
@@ -197,12 +198,12 @@ export class Round {
     return this;
   }
 
-  // Only the course is directly editable on a Round - everything else is derived or calculated
+  // Only the course and completed flag are directly editable on a Round - everything else is derived or calculated
   // Sending just enough to pass that validator
   toJson(): any {
     return {
       'code': '',
-      'expires': null,
+      'is_complete': this.completed,
       'course': this.course.id
     };
   }

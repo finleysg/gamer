@@ -47,4 +47,8 @@ export class BestBallResult implements GameResult {
     this.amount = json.amount;
     return this;
   }
+
+  get playerNames(): string {
+    return this.players.map(p => p.name).join(', ');
+  }
 }

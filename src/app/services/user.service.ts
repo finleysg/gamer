@@ -119,7 +119,7 @@ export class UserService extends BaseService {
     }
 
     createAccount(newUser: any): Observable<any> {
-        return this.http.post(`${this.baseUrl}/members/register/`, newUser, {
+        return this.http.post(`${this.authUrl}/registration/`, newUser, {
             headers: new HttpHeaders().set('Content-Type', 'application/json'),
         });
     }
@@ -150,7 +150,7 @@ export class UserService extends BaseService {
             map((data: any) => {
                 return new User().fromJson(data);
             }),
-            catchError(() => {
+            catchError((err: any) => {
                 this.removeTokenFromStorage();
                 return of(new User());
             })

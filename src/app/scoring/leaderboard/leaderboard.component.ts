@@ -48,7 +48,11 @@ export class LeaderboardComponent implements OnInit {
       const currentHole = this.roundService.lastHole.holeNumber < this.round.course.numberOfHoles ?
         this.roundService.lastHole.holeNumber + 1 :
         this.roundService.lastHole.holeNumber;
-      this.router.navigate(['/scoring', this.round.code, this.roundService.currentGroup.number, currentHole]);
+      this.router.navigate(['/scoring', this.round.code, 'hole', this.roundService.currentGroup.number, currentHole]);
+    } else if (this.roundService.currentGroup) {
+      this.router.navigate(['/scoring', this.round.code, 'hole', this.roundService.currentGroup.number, 1]);
+    } else {
+      this.router.navigate(['/scoring', this.round.code, 'hole', 1, 1]);
     }
   }
 

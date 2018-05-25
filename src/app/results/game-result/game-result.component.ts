@@ -14,7 +14,7 @@ export class GameResultComponent implements OnInit {
 
   round: Round;
   game: Game;
-  results: GameResult[];
+  version: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -22,22 +22,14 @@ export class GameResultComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.version = 1; // i.e. version of the results, which may be refreshed/updated
     this.route.data
     .subscribe(
       (data: {round: Round}) => {
         this.round = data.round;
         this.game = this.round.selectGame(+this.route.snapshot.params['id']);
-        this.roundService.getGameResult(this.game).subscribe(results => {
-          this.results = results;
-        });
       }
     );
-  }
-
-  refreshResults(): void {
-    this.roundService.scoreGame(this.game).subscribe(results => {
-      this.results = results;
-    });
   }
 
   nextGame(): void {
