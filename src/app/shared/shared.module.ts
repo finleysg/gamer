@@ -19,10 +19,13 @@ import {
   MatInputModule,
   MatIconModule,
   MatSnackBarModule,
-  MatAutocompleteModule} from '@angular/material';
+  MatAutocompleteModule,
+  MatDialogModule} from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { CookieService } from 'ngx-cookie-service';
 import { LeaderboardPipe } from './leaderboard.pipe';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { DialogService } from './dialog.service';
 
 @NgModule({
   imports: [
@@ -47,14 +50,20 @@ import { LeaderboardPipe } from './leaderboard.pipe';
     MatProgressBarModule,
     MatSnackBarModule,
     MatIconModule,
+    MatDialogModule,
     MatAutocompleteModule,
     FlexLayoutModule
   ],
   declarations: [
-    LeaderboardPipe
+    LeaderboardPipe,
+    ConfirmDialogComponent
+  ],
+  entryComponents: [
+    ConfirmDialogComponent
   ],
   providers: [
-    CookieService
+    CookieService,
+    DialogService
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
@@ -79,6 +88,7 @@ import { LeaderboardPipe } from './leaderboard.pipe';
     MatProgressBarModule,
     MatSnackBarModule,
     MatIconModule,
+    MatDialogModule,
     MatAutocompleteModule,
     FlexLayoutModule,
     LeaderboardPipe

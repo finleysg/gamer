@@ -11,18 +11,18 @@
           <p>{{score.player.name}}</p>
         </div>
         <div fxFlex="10">
-          <button class="good" mat-icon-button (click)="updateScore(score, -1)"><mat-icon class="good-icon">arrow_drop_down</mat-icon></button>
+          <button class="good" mat-icon-button [disabled]="!round.canEdit" (click)="updateScore(score, -1)"><mat-icon class="good-icon">arrow_drop_down</mat-icon></button>
         </div>
-        <div fxFlex="15" [class]="getScoreClass(score)">
+        <div fxFlex="15" [class]="score.displayClass">
           <div>
             <p class="score">{{score.noScore ? 'X' : score.grossScore}}</p>
           </div>
         </div>
         <div fxFlex="10">
-          <button class="bad" mat-icon-button (click)="updateScore(score, 1)"><mat-icon class="bad-icon">arrow_drop_up</mat-icon></button>
+          <button class="bad" mat-icon-button [disabled]="!round.canEdit" (click)="updateScore(score, 1)"><mat-icon class="bad-icon">arrow_drop_up</mat-icon></button>
         </div>
         <div fxFlex="25">
-          <button class="quit" mat-icon-button (click)="toggleNoScore(score)"><mat-icon [color]="'warn'">block</mat-icon></button>
+          <button class="quit" mat-icon-button [disabled]="!round.canEdit" (click)="toggleNoScore(score)"><mat-icon [color]="'warn'">block</mat-icon></button>
         </div>
       </div>
     </div>

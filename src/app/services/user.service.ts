@@ -12,7 +12,7 @@ import { Options } from '../models/options';
 @Injectable()
 export class UserService extends BaseService {
 
-    private _rememberUser: boolean;
+    // private _rememberUser: boolean;
     private currentUserSource: BehaviorSubject<User>;
     public currentUser$: Observable<User>;
     private _currentUser: User;
@@ -27,19 +27,14 @@ export class UserService extends BaseService {
         private cookieService: CookieService
     ) {
         super();
-        if (!this._currentUser) {
-            const storedUser = this.getUserFromStorage();
-            if (!storedUser) {
-                this._currentUser = new User();
-                this.saveUserToStorage(JSON.stringify(this._currentUser));
-            } else {
-                this._rememberUser = true;
-                this._currentUser = Object.assign(new User(), JSON.parse(storedUser));
-                // this.errorHandler.setUserContext(this._currentUser);
-            }
-        }
+
+        this._currentUser = new User();
         this.currentUserSource = new BehaviorSubject(this._currentUser);
         this.currentUser$ = this.currentUserSource.asObservable();
+        this.getUser().subscribe(user => {
+            this._currentUser = user;
+            this.currentUserSource.next(this._currentUser);
+        });
         // this.errorHandler.lastError$.subscribe(err => this.onError(err));
     }
 
@@ -49,7 +44,7 @@ export class UserService extends BaseService {
 
     login(username: string, password: string, remember: boolean): Observable<void> {
 
-        this._rememberUser = remember;
+        // this._rememberUser = remember;
 
         let email = '';
         if (username.indexOf('@') > 0) {
@@ -62,13 +57,13 @@ export class UserService extends BaseService {
         }).pipe(
             flatMap((data: any) => {
                 if (data && data.key) {
-                    this.saveTokenToStorage(data.key);
+                    this.saveTokenToStorage(data.key, remember);
                     return this.getUser();
                 }
             }),
             map(user => {
                 this._currentUser = user;
-                this.saveUserToStorage(JSON.stringify(this._currentUser));
+                // this.saveUserToStorage(JSON.stringify(this._currentUser));
                 // this.errorHandler.setUserContext(this._currentUser);
                 this.currentUserSource.next(this._currentUser);
                 return;
@@ -83,7 +78,7 @@ export class UserService extends BaseService {
         }).pipe(
             map((data: any) => {
                 if (data && data.key) {
-                    this.saveTokenToStorage(data.key);
+                    this.saveTokenToStorage(data.key, false);
                     return;
                 }
             })
@@ -138,7 +133,7 @@ export class UserService extends BaseService {
         this.getUser().pipe(
             map(user => {
                 this._currentUser = user;
-                this.saveUserToStorage(JSON.stringify(this._currentUser));
+                // this.saveUserToStorage(JSON.stringify(this._currentUser));
                 this.currentUserSource.next(this._currentUser);
                 return;
             })
@@ -168,7 +163,7 @@ export class UserService extends BaseService {
         this.removeTokenFromStorage();
         this._currentUser = new User();
         this.currentUserSource.next(this._currentUser);
-        this.saveUserToStorage(JSON.stringify(this._currentUser));
+        // this.saveUserToStorage(JSON.stringify(this._currentUser));
         // this.errorHandler.clearUserContext();
     }
 
@@ -251,14 +246,15 @@ export class UserService extends BaseService {
     }
 
     private getTokenFromStorage(): string {
-        if (this._rememberUser) {
-            return localStorage.getItem('gamer-token');
+        let token = localStorage.getItem('gamer-token');
+        if (!token) {
+            token = sessionStorage.getItem('gamer-token');
         }
-        return sessionStorage.getItem('gamer-token');
+        return token;
     }
 
-    private saveTokenToStorage(data: string): void {
-        if (this._rememberUser) {
+    private saveTokenToStorage(data: string, remember: boolean): void {
+        if (remember) {
             localStorage.setItem('gamer-token', data);
         } else {
             sessionStorage.setItem('gamer-token', data);
@@ -270,17 +266,17 @@ export class UserService extends BaseService {
         sessionStorage.removeItem('gamer-token');
     }
 
-    private getUserFromStorage(): string {
-        return sessionStorage.getItem('gamer-user');
-    }
+    // private getUserFromStorage(): string {
+    //     return sessionStorage.getItem('gamer-user');
+    // }
 
-    private saveUserToStorage(data: string): void {
-        sessionStorage.setItem('gamer-user', data);
-    }
+    // private saveUserToStorage(data: string): void {
+    //     sessionStorage.setItem('gamer-user', data);
+    // }
 
-    private removeUserFromStorage(): void {
-        sessionStorage.removeItem('gamer-user');
-    }
+    // private removeUserFromStorage(): void {
+    //     sessionStorage.removeItem('gamer-user');
+    // }
 }
 
 export class PasswordReset {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { Game } from '../../models/game';
 import { Player } from '../../models/player';
 import { Team } from '../../models/team';
@@ -35,25 +35,27 @@ export class GameComponent implements OnInit {
   ngOnInit() {
     this.route.data
       .subscribe(
-        (data: {round: Round}) => {
+        (data: { round: Round }) => {
           this.round = data.round;
-          this.game = this.round.selectGame(+this.route.snapshot.params['id']);
-          this.roundService.getGameTypes().subscribe(games => {
-            this.gameTypes = games.filter(g => {
-              if (this.game.competitionType === 'team') {
-                return g.isTeam;
-              } else if (this.game.competitionType === 'match') {
-                return g.isMatch;
-              } else {
-                return g.isIndividual;
+          this.route.params.subscribe((p: Params) => {
+            this.game = this.round.selectGame(+p['id']);
+            this.roundService.getGameTypes().subscribe(games => {
+              this.gameTypes = games.filter(g => {
+                if (this.game.competitionType === 'team') {
+                  return g.isTeam;
+                } else if (this.game.competitionType === 'match') {
+                  return g.isMatch;
+                } else {
+                  return g.isIndividual;
+                }
+              });
+              if (this.game.gameType) {
+                this.updateGameType(this.game.gameType);
               }
+              this.teamChange();
             });
-            if (this.game.gameType) {
-              this.updateGameType(this.game.gameType);
-            }
-            this.teamChange();
+            this.gameHeader = this.game.isMatch ? 'Match Details' : this.game.isTeam ? 'Team Game Details' : 'Individual Game Details';
           });
-          this.gameHeader = this.game.isMatch ? 'Match Details' : this.game.isTeam ? 'Team Game Details' : 'Individual Game Details';
         }
       );
   }

@@ -9,26 +9,26 @@
     <mat-card-content>
       <div *ngFor="let player of group.players" fxLayout="row">
         <div fxFlex="15">
-          <button mat-icon-button color="warn" (click)="removePlayer(group, player)">
+          <button mat-icon-button color="warn" [disabled]="!round.canEdit" (click)="removePlayer(group, player)">
             <mat-icon>remove_circle</mat-icon>
           </button>
         </div>
         <div fxFlex="50">
           <mat-form-field class="partial-width-75">
-            <input matInput [(ngModel)]="player.name" placeholder="player" floatPlaceholder="never" />
+            <input matInput [disabled]="!round.canEdit" [(ngModel)]="player.name" placeholder="player" floatPlaceholder="never" />
           </mat-form-field>
         </div>
         <div fxFlex="20">
           <mat-form-field class="partial-width-75">
-            <input matInput [(ngModel)]="player.handicapIndex" placeholder="hcp" />
+            <input matInput [disabled]="!round.canEdit" [(ngModel)]="player.handicapIndex" placeholder="hcp" />
           </mat-form-field>
         </div>
         <div fxFlex="15" *ngIf="friends">
-          <button [matMenuTriggerFor]="friendMenu" mat-icon-button color="primary">
+          <button [matMenuTriggerFor]="friendMenu" [disabled]="!round.canEdit" mat-icon-button color="primary">
             <mat-icon>person_add</mat-icon>
           </button>
             <mat-menu #friendMenu="matMenu" x-position="before">
-              <button *ngFor="let friend of friends" mat-menu-item (click)="assignFriend(friend, player)">
+              <button *ngFor="let friend of friends" mat-menu-item [disabled]="!round.canEdit" (click)="assignFriend(friend, player)">
                 {{friend.name}}
               </button>  
             </mat-menu>
@@ -36,15 +36,15 @@
       </div>
     </mat-card-content>
     <mat-card-actions>
-      <button color="primary" (click)="addPlayer(group)" mat-button>Add Player</button>
-      <button (click)="assignYourself(group)" mat-button>Assign Yourself</button>
-      <button *ngIf="group.number > 0" (click)="removeGroup(group.number)" color="warn" mat-button>Delete</button>
+      <button color="primary" (click)="addPlayer(group)" [disabled]="!round.canEdit" mat-button>Add Player</button>
+      <button (click)="assignYourself(group)" [disabled]="!round.canEdit" mat-button>Assign Yourself</button>
+      <button *ngIf="group.number > 0" (click)="removeGroup(group.number)" [disabled]="!round.canEdit" color="warn" mat-button>Delete</button>
     </mat-card-actions>
   </mat-card>
 </div>
 <div class="m-t-15" fxLayout="row" fxLayoutAlign="none center">
   <div fxFlex="10">
-    <button mat-icon-button color="accent" (click)="addGroup()">
+    <button mat-icon-button color="accent" [disabled]="!round.canEdit" (click)="addGroup()">
       <mat-icon>add_circle</mat-icon>
     </button>
   </div>
@@ -53,5 +53,5 @@
   </div>
 </div>
 <div class="m-t-30" fxLayout="row" fxLayoutAlign="center none">
-  <button mat-raised-button color="primary" (click)="onNext()">Save Groups</button>
+  <button mat-raised-button color="primary" [disabled]="!round.canEdit" (click)="onNext()">Save Groups</button>
 </div>

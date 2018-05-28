@@ -10,8 +10,7 @@ import { SetupComponent } from './setup.component';
 const routes: Routes = [
   { path: '', component: SetupComponent, children: [
     { path: ':code', children: [
-      { path: 'summary', component: SummaryComponent },
-      // { path: 'summary', resolve: { round: RoundResolverService }, component: SummaryComponent },
+      { path: 'summary', resolve: { round: RoundResolverService }, component: SummaryComponent },
       { path: 'groups', resolve: { round: RoundResolverService }, component: GroupCreateComponent },
       { path: 'games', resolve: { round: RoundResolverService }, component: GamesComponent },
       { path: 'game/:id', resolve: { round: RoundResolverService }, component: GameComponent }

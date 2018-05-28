@@ -2,12 +2,12 @@
   <button class="mat-fab-top-right m-r-10 m-t-50" color="accent" mat-fab (click)="refreshResults()">
     <mat-icon>refresh</mat-icon>
   </button>
-  <h4>Results</h4>
   <mat-list>
     <mat-list-item *ngFor="let result of results">
-      <h4 matLine>Team {{result.teamNumber}}: {{result.playerNames}}</h4>
+      <mat-icon mat-list-icon>attach_money</mat-icon>
+      <h4 matLine *ngIf="result.resultText !== 'AS'">Team {{result.teamNumber}}: {{result.playerNames}}</h4>
       <p matLine>{{result.description}} {{result.resultText}}</p>
-      <p matLine>{{result.amount | currency:'USD'}}</p>
+      <p matLine *ngIf="result.resultText !== 'AS'">{{result.amount | currency:'USD'}}</p>
     </mat-list-item>
   </mat-list>
 </div>

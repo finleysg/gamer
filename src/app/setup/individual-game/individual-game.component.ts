@@ -11,6 +11,7 @@ export class IndividualGameComponent {
 
   @Input() teams: Team[];
   @Input() allPlayers: Player[];
+  @Input() disabled: boolean;
 
   constructor() { }
 

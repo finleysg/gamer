@@ -11,6 +11,7 @@ export class MatchGameComponent {
 
   @Input() teams: Team[];
   @Input() players: Player[];
+  @Input() disabled: boolean;
   @Output() change = new EventEmitter();
 
   constructor() { }

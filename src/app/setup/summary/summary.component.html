@@ -1,3 +1,42 @@
-<p>
-  summary works!
-</p>
+<div fxLayout="row" fxLayoutAlign="center none" class="m-t-15" *ngIf="round">
+  <h2>Round {{round.code}}: {{round.created.format('MMM D YYYY')}}</h2>
+</div>
+<div fxLayout="row" *ngIf="round">
+  <div fxFlex.gt-sm="25" fxFlex.gt-xs="50" fxFlex="100">
+    <mat-nav-list class="navigation">
+      <mat-list-item>
+        <a class="relative" [routerLink]="['/setup', round.code, 'groups']">
+          <mat-icon class="m-r-15">group</mat-icon>
+          <span>Groups and Players</span>
+        </a>
+      </mat-list-item>
+      <mat-list-item *ngIf="round.hasGroup">
+        <a class="relative" [routerLink]="['/setup', round.code, 'games']">
+          <mat-icon class="m-r-15">casino</mat-icon>
+          <span>Games</span>
+        </a>
+      </mat-list-item>
+      <mat-list-item *ngIf="round.hasGames">
+        <a class="relative" [routerLink]="['/scoring', round.code, 'hole', 1, 1]">
+          <mat-icon class="m-r-15">create</mat-icon>
+          <span>Scoring</span>
+        </a>
+      </mat-list-item>
+      <mat-list-item *ngIf="round.hasGames">
+        <a class="relative" [routerLink]="['/scoring', round.code, 'leaderboard', 'front', 0]">
+          <mat-icon class="m-r-15">view_comfy</mat-icon>
+          <span>Leaderboard</span>
+        </a>
+      </mat-list-item>
+      <mat-list-item *ngIf="round.hasGames">
+        <a class="relative" (click)="goToResults()">
+          <mat-icon class="m-r-15">attach_money</mat-icon>
+          <span>Results</span>
+        </a>
+      </mat-list-item>
+    </mat-nav-list>
+  </div>
+</div>
+<div class="m-t-30" fxLayout="row" fxLayoutAlign="center none">
+  <button mat-raised-button [color]="'primary'" (click)="closeRound()">Close Round</button>
+</div>

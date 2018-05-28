@@ -15,6 +15,26 @@ export class Score {
   proxy: boolean;
   dirty: boolean;
 
+  get displayClass(): string {
+    let scoreClass = 'par';
+    if (this.noScore) {
+      scoreClass = 'no-score';
+    } else if (this.grossScore === 0) {
+      scoreClass = 'empty';
+    } else {
+      if (this.grossScore + 2 <= this.hole.par) {
+        scoreClass = 'eagle';
+      } else if (this.grossScore + 1 === this.hole.par) {
+        scoreClass = 'birdie';
+      } else if (this.grossScore === this.hole.par + 1) {
+        scoreClass = 'bogey';
+      } else if (this.grossScore > this.hole.par + 1) {
+        scoreClass = 'big-number';
+      }
+    }
+    return `score-box m-t-15 ${scoreClass}`;
+  }
+
   fromJson(json: any): Score {
     this.id = json.id;
     this.roundId = json.round;

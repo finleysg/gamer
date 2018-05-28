@@ -14,6 +14,7 @@ export class Round {
   groups: Group[] = [];
   games: Game[] = [];
   currentState: RoundStateEnum;
+  readonly: boolean;
 
   get players(): Player[] {
     const players = [];
@@ -21,6 +22,18 @@ export class Round {
       group.players.forEach((player: Player) => players.push(player));
     });
     return players;
+  }
+
+  get canEdit(): boolean {
+    return !this.completed && !this.readonly;
+  }
+
+  get hasGroup(): boolean {
+    return this.groups && this.groups.length > 0;
+  }
+
+  get hasGames(): boolean {
+    return this.games && this.games.length > 0;
   }
 
   newGroup(): void {

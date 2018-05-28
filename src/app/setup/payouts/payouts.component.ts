@@ -11,6 +11,7 @@ export class PayoutsComponent {
 
   @Input() game: Game;
   @Input() players: number;
+  @Input() disabled: boolean;
 
   constructor() { }
 

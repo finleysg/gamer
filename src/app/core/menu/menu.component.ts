@@ -21,7 +21,9 @@ export class MenuComponent {
 
   navigateTo(parent: string[], child: string[]): void {
     const commands = ['/'];
-    parent.forEach(p => commands.push(p));
+    if (parent) {
+      parent.forEach(p => commands.push(p));
+    }
     if (child) {
       child.forEach(c => commands.push(c));
     }

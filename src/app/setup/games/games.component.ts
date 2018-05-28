@@ -22,15 +22,17 @@ export class GamesComponent implements OnInit {
 
   ngOnInit() {
     this.route.data
-      .subscribe((data: {round: Round}) => {
+      .subscribe((data: { round: Round }) => {
         this.round = data.round;
       });
   }
 
   newGame(competitionType: string): void {
-    this.roundService.createGame(competitionType).subscribe((game) => {
-      this.router.navigate(['game', game.id], { relativeTo: this.route.parent });
-    });
+    if (this.round.canEdit) {
+      this.roundService.createGame(competitionType).subscribe((game) => {
+        this.router.navigate(['game', game.id], { relativeTo: this.route.parent });
+      });
+    }
   }
 
   editGame(game: Game): void {

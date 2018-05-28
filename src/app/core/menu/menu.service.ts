@@ -34,7 +34,7 @@ export class MenuService {
     private roundService: RoundService
   ) {
     this._menuSource = new BehaviorSubject<Menu[]>([]);
-    this.roundService.myRounds().subscribe(rounds => {
+    this.roundService.myRounds.subscribe(rounds => {
       this._rounds = rounds;
       this.menuBuilder();
     });
@@ -42,6 +42,7 @@ export class MenuService {
       this._currentRound = round;
       this.menuBuilder();
     });
+    this.roundService.loadMyRounds();
   }
 
   getMenu(): Observable<Menu[]> {
@@ -51,7 +52,7 @@ export class MenuService {
   menuBuilder(): void {
     const menu = [
       {
-        state: [''],
+        state: [],
         name: 'Home',
         type: 'link',
         icon: 'home'
@@ -77,7 +78,7 @@ export class MenuService {
       children: []
     };
     rounds.forEach(round => {
-      roundsMenu.children.push({state: [round.code, 'groups'],
+      roundsMenu.children.push({state: [round.code, 'summary'],
                                 name: `${round.code.toUpperCase()} (${round.created.format('MMM D')})`});
     });
     return roundsMenu;

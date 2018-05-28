@@ -5,17 +5,17 @@
         {{team.teamNumber}}
       </div>
       <div fxFlex="50">
-        <mat-select [(ngModel)]="team.playerId" (change)="teamChange(team.playerId)" placeholder="Player">
+        <mat-select [(ngModel)]="team.playerId" [disabled]="disabled" (change)="teamChange(team.playerId)" placeholder="Player">
           <mat-option *ngFor="let player of round.players" [value]="player.id">{{player.name}}</mat-option>
         </mat-select>
       </div>
       <div fxFlex="20">
         <mat-form-field class="partial-width-75">
-          <input matInput placeholder="Shots" [(ngModel)]="team.strokes" />
+          <input matInput placeholder="Shots" [disabled]="disabled" [(ngModel)]="team.strokes" />
         </mat-form-field>
       </div>
       <div fxFlex="10">
-        <button mat-icon-button color="warn" (click)="removePlayer(team)">
+        <button mat-icon-button color="warn" [disabled]="disabled" (click)="removePlayer(team)">
           <mat-icon>remove_circle_outline</mat-icon>
         </button>
       </div>

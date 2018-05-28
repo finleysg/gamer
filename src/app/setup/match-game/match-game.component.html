@@ -1,12 +1,12 @@
 <div fxLayout="row" fxLayoutGap="15px" *ngFor="let team of teams">
   <div fxFlex="60">
-    <mat-select [(ngModel)]="team.playerId" (change)="teamChange(team.playerId)" placeholder="Player">
+    <mat-select [(ngModel)]="team.playerId" [disabled]="disabled" (change)="teamChange(team.playerId)" placeholder="Player">
       <mat-option *ngFor="let player of players" [value]="player.id">{{player.name}}</mat-option>
     </mat-select>
   </div>
   <div fxFlex="20">
     <mat-form-field class="partial-width-75">
-      <input matInput placeholder="Shots" [(ngModel)]="team.strokes" />
+      <input matInput placeholder="Shots" [disabled]="disabled" [(ngModel)]="team.strokes" />
     </mat-form-field>
   </div>
 </div>

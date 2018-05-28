@@ -13,6 +13,7 @@ export class TeamGameComponent implements OnChanges {
 
   @Input() round: Round;
   @Input() game: Game;
+  @Input() disabled: boolean;
   @Output() change = new EventEmitter();
 
   teamNumbers: number[] = [];
@@ -35,50 +36,60 @@ export class TeamGameComponent implements OnChanges {
 
   // Methods for team games
   assignByGroups(): void {
-    this.round.createDefaultTeams(this.game);
-    this.updateTeamNumbers();
-    this.teamChange('');
+    if (!this.disabled) {
+      this.round.createDefaultTeams(this.game);
+      this.updateTeamNumbers();
+      this.teamChange('');
+    }
   }
 
   addTeam(): void {
-    let teamNumber = 1;
-    if (this.teamNumbers.length > 0) {
-      teamNumber = Math.max(...this.teamNumbers) + 1;
+    if (!this.disabled) {
+      let teamNumber = 1;
+      if (this.teamNumbers.length > 0) {
+        teamNumber = Math.max(...this.teamNumbers) + 1;
+      }
+      const team1 = new Team();
+      team1.teamNumber = teamNumber;
+      this.game.teams.push(team1);
+      const team2 = new Team();
+      team2.teamNumber = teamNumber;
+      this.game.teams.push(team2);
+      this.updateTeamNumbers();
+      this.teamChange('');
     }
-    const team1 = new Team();
-    team1.teamNumber = teamNumber;
-    this.game.teams.push(team1);
-    const team2 = new Team();
-    team2.teamNumber = teamNumber;
-    this.game.teams.push(team2);
-    this.updateTeamNumbers();
-    this.teamChange('');
   }
 
   removeTeam(teamNumber: number): void {
     // const maxNumber = Math.max(...this.teamNumbers); // spread operator converts to distinct args
-    if (teamNumber) {
-      for (let i = this.game.teams.length - 1; i >= 0; i--) {
-        if (this.game.teams[i].teamNumber === teamNumber) {
-          this.game.teams.splice(i, 1);
+    if (!this.disabled) {
+      if (teamNumber) {
+        for (let i = this.game.teams.length - 1; i >= 0; i--) {
+          if (this.game.teams[i].teamNumber === teamNumber) {
+            this.game.teams.splice(i, 1);
+          }
         }
+        this.updateTeamNumbers();
+        this.teamChange('');
+        this.round.calculateHandicaps(this.game);
       }
-      this.updateTeamNumbers();
-      this.teamChange('');
-      this.round.calculateHandicaps(this.game);
     }
   }
 
   addPlayer(teamNumber: number): void {
-    const newTeam = new Team();
-    newTeam.teamNumber = teamNumber;
-    this.game.teams.push(newTeam);
+    if (!this.disabled) {
+      const newTeam = new Team();
+      newTeam.teamNumber = teamNumber;
+      this.game.teams.push(newTeam);
+    }
   }
 
   removePlayer(team: Team): void {
-    const idx = this.game.teams.findIndex(t => t.localId === team.localId);
-    this.game.teams.splice(idx, 1);
-    this.teamChange('');
-    this.round.calculateHandicaps(this.game);
+    if (!this.disabled) {
+      const idx = this.game.teams.findIndex(t => t.localId === team.localId);
+      this.game.teams.splice(idx, 1);
+      this.teamChange('');
+      this.round.calculateHandicaps(this.game);
+    }
   }
 }

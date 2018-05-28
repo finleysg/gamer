@@ -16,6 +16,7 @@ import { Leaderboard } from '../models/leaderboard';
 import { GameType } from '../models/gameType';
 import { SkinResult, BestBallResult, GameResult } from '../models/results';
 import { UserService } from './user.service';
+import { MatSnackBar } from '@angular/material';
 
 @Injectable()
 export class RoundService extends BaseService {
@@ -30,17 +31,30 @@ export class RoundService extends BaseService {
 
   private _currentRound: Round;
   private _currentRoundSource: BehaviorSubject<Round>;
+  private _myRounds: Round[];
+  private _myRoundSource: BehaviorSubject<Round[]>;
   private _currentHole: Hole;
   private _currentGroup: Group;
 
   constructor(
     private courseService: CourseService,
     private userService: UserService,
-    private http: HttpClient
+    private http: HttpClient,
+    private snackbar: MatSnackBar
   ) {
     super();
     this._currentRound = new Round();
     this._currentRoundSource = new BehaviorSubject<Round>(this._currentRound);
+    this._myRounds = [];
+    this._myRoundSource = new BehaviorSubject<Round[]>(this._myRounds);
+    this.userService.currentUser$.subscribe(user => {
+      this._currentRound.readonly = !user.isAuthenticated;
+      this._currentRoundSource.next(cloneDeep(this._currentRound));
+      if (!user.isAuthenticated) {
+        this._myRounds = [];
+        this._myRoundSource.next(this._myRounds);
+      }
+    });
   }
 
   hasRound(code: string): boolean {
@@ -51,6 +65,10 @@ export class RoundService extends BaseService {
     return this._currentRoundSource.asObservable();
   }
 
+  get myRounds(): Observable<Round[]> {
+    return this._myRoundSource.asObservable();
+  }
+
   get lastHole(): Hole {
     return this._currentHole;
   }
@@ -59,15 +77,17 @@ export class RoundService extends BaseService {
     return this._currentGroup;
   }
 
-  myRounds(): Observable<Round[]> {
+  loadMyRounds(): void {
     if (this.userService.user.isAuthenticated) {
-      return this.http.get(this.resource).pipe(
+      this.http.get(this.resource).pipe(
         map((json: any[]) => {
-          return json.map(r => new Round().fromJson(r));
+          this._myRounds = json.map(r => new Round().fromJson(r));
+          this._myRoundSource.next(this._myRounds);
         })
-      );
+      ).subscribe();
     } else {
-      return of([]);
+      this._myRounds = [];
+      this._myRoundSource.next(this._myRounds);
     }
   }
 
@@ -82,6 +102,8 @@ export class RoundService extends BaseService {
           this._currentRound = new Round().fromJson(json);
           this._currentRound.course = course;
           this._currentRoundSource.next(cloneDeep(this._currentRound));
+          this._myRounds.push(this._currentRound);
+          this._myRoundSource.next(this._myRounds);
           return this._currentRound;
         })
       );
@@ -94,6 +116,7 @@ export class RoundService extends BaseService {
           return null;
         } else {
           this._currentRound = new Round().fromJson(json[0]);
+          this._currentRound.readonly = !this.userService.user.isAuthenticated;
           return this.courseService.getCourse(this._currentRound.course.id);
         }
       }),
@@ -110,14 +133,26 @@ export class RoundService extends BaseService {
   }
 
   updateCourse(course: Course): void {
-    this.http.patch(`${this.resource}/${this._currentRound.id}`, { 'course': course.id }, {
+    if (this.canEdit()) {
+      this.http.patch(`${this.resource}${this._currentRound.id}/`, { 'course': course.id }, {
+        headers: new HttpHeaders().set('Content-Type', 'application/json'),
+      }).pipe(
+        tap(() => {
+          this._currentRound.course = course;
+          this._currentRoundSource.next(cloneDeep(this._currentRound));
+        })
+      ).subscribe();
+    }
+  }
+
+  closeRound(): Observable<any> {
+    return this.http.patch(`${this.resource}${this._currentRound.id}/`, { 'is_complete': true }, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
     }).pipe(
       tap(() => {
-        this._currentRound.course = course;
-        this._currentRoundSource.next(cloneDeep(this._currentRound));
+        this.loadRound(this._currentRound.code);
       })
-    ).subscribe();
+    );
   }
 
   saveGroups(round: Round): Observable<Round> {
@@ -132,57 +167,67 @@ export class RoundService extends BaseService {
         });
       }
     });
-    return forkJoin(requests).pipe(
-      flatMap(() => {
-        return this.loadRound(round.code);
-      })
-    );
+    if (this.canEdit()) {
+      return forkJoin(requests).pipe(
+        flatMap(() => {
+          return this.loadRound(round.code);
+        })
+      );
+    }
   }
 
   deleteGroup(group: Group): Observable<Round> {
-    return this.http.delete(`${this.groupResource}${group.id}/`).pipe(
-      flatMap(() => {
-        return this.loadRound(this._currentRound.code);
-      })
-    );
+    if (this.canEdit()) {
+      return this.http.delete(`${this.groupResource}${group.id}/`).pipe(
+        flatMap(() => {
+          return this.loadRound(this._currentRound.code);
+        })
+      );
+    }
   }
 
   createGame(competitionType): Observable<Game> {
     const game = new Game();
     game.roundId = this._currentRound.id;
     game.competitionType = competitionType;
-    return this.http.post(this.gameResource, game.toJson(), {
-      headers: new HttpHeaders().set('Content-Type', 'application/json'),
-    }).pipe(
-      map((json) => {
-        const created = new Game().fromJson(json);
-        this._currentRound.addGame(created);
-        this._currentRoundSource.next(cloneDeep(this._currentRound));
-        return created;
-      })
-    );
+    if (this.canEdit()) {
+      return this.http.post(this.gameResource, game.toJson(), {
+        headers: new HttpHeaders().set('Content-Type', 'application/json'),
+      }).pipe(
+        map((json) => {
+          const created = new Game().fromJson(json);
+          this._currentRound.addGame(created);
+          this._currentRoundSource.next(cloneDeep(this._currentRound));
+          return created;
+        })
+      );
+    }
   }
 
   updateGame(game: Game): Observable<Game> {
-    return this.http.put(`${this.gameResource}${game.id}/`, game.toJson(), {
-      headers: new HttpHeaders().set('Content-Type', 'application/json'),
-    }).pipe(
-      map((json) => {
-        const updated = new Game().fromJson(json);
-        this._currentRound.updateGame(updated);
-        this._currentRoundSource.next(cloneDeep(this._currentRound));
-        return updated;
-      })
-    );
+    if (this.canEdit()) {
+      return this.http.put(`${this.gameResource}${game.id}/`, game.toJson(), {
+        headers: new HttpHeaders().set('Content-Type', 'application/json'),
+      }).pipe(
+        map((json) => {
+          const updated = new Game().fromJson(json);
+          this._currentRound.updateGame(updated);
+          this._currentRoundSource.next(cloneDeep(this._currentRound));
+          return updated;
+        })
+      );
+    }
   }
 
   deleteGame(game: Game): Observable<any> {
-    return this.http.delete(`${this.gameResource}${game.id}/`).pipe(
-      tap(() => {
-        this._currentRound.removeGame(game);
-        this._currentRoundSource.next(cloneDeep(this._currentRound));
-      })
-    );
+    if (this.canEdit()) {
+      return this.http.delete(`${this.gameResource}${game.id}/`).pipe(
+        tap(() => {
+          this._currentRound.removeGame(game);
+          this._currentRoundSource.next(cloneDeep(this._currentRound));
+        })
+      );
+    }
   }
 
   allScores(): Observable<Score[]> {
@@ -227,6 +272,9 @@ export class RoundService extends BaseService {
   }
 
   saveScores(scores: Score[]): void {
+    if (!this.canEdit()) {
+      return;
+    }
     if (scores[0]) {
       this._currentHole = scores[0].hole;
     }
@@ -269,7 +317,9 @@ export class RoundService extends BaseService {
   }
 
   randomScores(): Observable<any> {
-    return this.http.post(`${this.scoringResource}random/${this._currentRound.id}/`, {});
+    if (this.canEdit()) {
+      return this.http.post(`${this.scoringResource}random/${this._currentRound.id}/`, {});
+    }
   }
 
   scoreGame(game: Game): Observable<GameResult[]> {
@@ -326,5 +376,13 @@ export class RoundService extends BaseService {
 
   private getPlayer(playerId: number): Player {
     return this._currentRound.players.find(p => p.id === playerId);
+  }
+
+  private canEdit(): boolean {
+    if (this._currentRound && !this._currentRound.canEdit) {
+      this.snackbar.open(`Round ${this._currentRound.code} is closed`, null, { duration: 3000 });
+      return false;
+    }
+    return true;
   }
 }

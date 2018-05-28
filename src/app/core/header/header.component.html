@@ -26,7 +26,7 @@
       <mat-icon>exit_to_app</mat-icon>
       Sign Out
     </button>
-    <button *ngIf="currentUser && !currentUser.isAuthenticated" mat-menu-item [routerLink]="['session', 'signin']">
+    <button *ngIf="currentUser && !currentUser.isAuthenticated" mat-menu-item [routerLink]="['/session', 'signin']">
       <mat-icon>cloud_done</mat-icon>
       Sign In
     </button>
