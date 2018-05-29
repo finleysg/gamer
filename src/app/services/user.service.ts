@@ -168,7 +168,7 @@ export class UserService extends BaseService {
     }
 
     friends(): Observable<PublicMember[]> {
-        return this.http.get(`${this.baseUrl}/friends`).pipe(
+        return this.http.get(`${this.baseUrl}/friends/`).pipe(
             map((members: any[]) => {
                 return members.map((m: any) => new PublicMember().fromJson(m));
             })
@@ -196,7 +196,7 @@ export class UserService extends BaseService {
     }
 
     allMembers(): Observable<PublicMember[]> {
-        return this.http.get(`${this.baseUrl}/members`).pipe(
+        return this.http.get(`${this.baseUrl}/members/`).pipe(
             map((members: any[]) => {
                 return members.map((m: any) => new PublicMember().fromJson(m));
             })
