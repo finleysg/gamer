@@ -31,8 +31,6 @@ export class RoundService extends BaseService {
 
   private _currentRound: Round;
   private _currentRoundSource: BehaviorSubject<Round>;
-  private _myRounds: Round[];
-  private _myRoundSource: BehaviorSubject<Round[]>;
   private _currentHole: Hole;
   private _currentGroup: Group;
 
@@ -45,15 +43,9 @@ export class RoundService extends BaseService {
     super();
     this._currentRound = new Round();
     this._currentRoundSource = new BehaviorSubject<Round>(this._currentRound);
-    this._myRounds = [];
-    this._myRoundSource = new BehaviorSubject<Round[]>(this._myRounds);
     this.userService.currentUser$.subscribe(user => {
       this._currentRound.readonly = !user.isAuthenticated;
       this._currentRoundSource.next(cloneDeep(this._currentRound));
-      if (!user.isAuthenticated) {
-        this._myRounds = [];
-        this._myRoundSource.next(this._myRounds);
-      }
     });
   }
 
@@ -65,10 +57,6 @@ export class RoundService extends BaseService {
     return this._currentRoundSource.asObservable();
   }
 
-  get myRounds(): Observable<Round[]> {
-    return this._myRoundSource.asObservable();
-  }
-
   get lastHole(): Hole {
     return this._currentHole;
   }
@@ -77,17 +65,15 @@ export class RoundService extends BaseService {
     return this._currentGroup;
   }
 
-  loadMyRounds(): void {
+  myRounds(): Observable<Round[]> {
     if (this.userService.user.isAuthenticated) {
-      this.http.get(this.resource).pipe(
+      return this.http.get(this.resource).pipe(
         map((json: any[]) => {
-          this._myRounds = json.map(r => new Round().fromJson(r));
-          this._myRoundSource.next(this._myRounds);
+          return json.map(r => new Round().fromJson(r));
         })
-      ).subscribe();
+      );
     } else {
-      this._myRounds = [];
-      this._myRoundSource.next(this._myRounds);
+      return of([]);
     }
   }
 
@@ -102,8 +88,6 @@ export class RoundService extends BaseService {
           this._currentRound = new Round().fromJson(json);
           this._currentRound.course = course;
           this._currentRoundSource.next(cloneDeep(this._currentRound));
-          this._myRounds.push(this._currentRound);
-          this._myRoundSource.next(this._myRounds);
           return this._currentRound;
         })
       );

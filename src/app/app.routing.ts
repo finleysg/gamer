@@ -10,6 +10,7 @@ const AppRoutes: Routes = [
     children: [
       { path: '', loadChildren: './dashboard/dashboard.module#DashboardModule' },
       { path: 'profile', loadChildren: './profile/profile.module#ProfileModule' },
+      { path: 'my-rounds', loadChildren: './my-rounds/my-rounds.module#MyRoundsModule' },
       { path: 'courses', loadChildren: './courses/courses.module#CoursesModule' },
       { path: 'setup', loadChildren: './setup/setup.module#SetupModule' },
       { path: 'scoring', loadChildren: './scoring/scoring.module#ScoringModule' },
