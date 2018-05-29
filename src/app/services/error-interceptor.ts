@@ -23,7 +23,8 @@ export class ErrorInterceptor implements HttpInterceptor {
         let message: string;
         if (err instanceof HttpErrorResponse) {
             if (err.status === 0) {
-                message = `Could not reach the bhmc server because your internet connection
+                console.log(err);
+                message = `Could not reach the server because your internet connection
                            was lost, the connection timed out, or the server is not responding.`;
             } else {
                 const body = err.error || {};

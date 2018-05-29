@@ -25,7 +25,7 @@ export class CourseService extends BaseService {
   }
 
   getCourse(id: number): Observable<Course> {
-    return this.http.get(`${this.resource}${id}`).pipe(
+    return this.http.get(`${this.resource}${id}/`).pipe(
       map((json: any) => {
         return new Course().fromJson(json);
       })
@@ -43,7 +43,7 @@ export class CourseService extends BaseService {
   }
 
   updateCourse(course: Course): Observable<Course> {
-    return this.http.put(`${this.resource}${course.id}`, course.toJson(), {
+    return this.http.put(`${this.resource}${course.id}/`, course.toJson(), {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
     }).pipe(
       map((json: any) => {
