@@ -66,15 +66,11 @@ export class RoundService extends BaseService {
   }
 
   myRounds(): Observable<Round[]> {
-    if (this.userService.user.isAuthenticated) {
-      return this.http.get(this.resource).pipe(
-        map((json: any[]) => {
-          return json.map(r => new Round().fromJson(r));
-        })
-      );
-    } else {
-      return of([]);
-    }
+    return this.http.get(this.resource).pipe(
+      map((json: any[]) => {
+        return json.map(r => new Round().fromJson(r));
+      })
+    );
   }
 
   createRound(course: Course): Observable<Round> {

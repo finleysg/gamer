@@ -5,7 +5,8 @@
   <mat-list>
     <mat-list-item *ngFor="let round of rounds" (click)="openRound(round)">
       <mat-icon color="primary" mat-list-icon>golf_course</mat-icon>
-      <h4 mat-line>{{round.created.format('MMM D YYYY')}} <small>{{round.code}}</small></h4>
+      <h4 mat-line>{{round.created.format('MMM D YYYY')}} ({{round.code}})</h4>
+      <p class="mat-text-muted" mat-line>{{round.course.name}}</p>
     </mat-list-item>
   </mat-list>
 </div>

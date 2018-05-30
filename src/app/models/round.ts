@@ -4,6 +4,7 @@ import { Game } from './game';
 import { Player } from './player';
 import { Team } from './team';
 import * as moment from 'moment';
+import { isNumber } from 'util';
 
 export class Round {
   id: number;
@@ -190,9 +191,13 @@ export class Round {
   }
 
   fromJson(json: any): Round {
-    // only serializing a course id
-    const course = new Course();
-    course.id = json.course;
+    // only serializing a course id when round is retrieved by code
+    let course = new Course();
+    if (isNumber(json.course)) {
+      course.id = json.course;
+    } else {
+      course = new Course().fromJson(json.course);
+    }
     this.id = json.id;
     this.course = course;
     this.code = json.code;
