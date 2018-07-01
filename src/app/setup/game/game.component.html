@@ -5,11 +5,16 @@
   <mat-card>
     <mat-card-content>
       <div fxLayout="column" *ngIf="gameTypes">
-        <mat-select class="partial-width-75 m-b-15" [(ngModel)]="game.gameType" [disabled]="!round.canEdit" (ngModelChange)="updateGameType($event)" placeholder="Select a game">
+        <mat-select class="partial-width-50 m-b-15" [(ngModel)]="game.gameType" [disabled]="!round.canEdit" (ngModelChange)="updateGameType($event)" placeholder="Select a game">
           <mat-option *ngFor="let gameType of gameTypes" [value]="gameType.id">{{gameType.name}}</mat-option>
         </mat-select>
-        <mat-select class="partial-width-75 m-b-15" [(ngModel)]="game.scoringType" [disabled]="!round.canEdit" (ngModelChange)="updateScoringType()" placeholder="Scoring System">
+        <mat-select class="partial-width-50 m-b-15" [(ngModel)]="game.scoringType" [disabled]="!round.canEdit" (ngModelChange)="updateScoringType()" placeholder="Scoring System">
           <mat-option *ngFor="let scoringType of scoringTypes" [value]="scoringType.id">{{scoringType.name}}</mat-option>
+        </mat-select>
+        <mat-select *ngIf="game.isTeam" class="partial-width-50 m-b-15" [(ngModel)]="game.numberOfScores" [disabled]="!round.canEdit" placeholder="# of Scores">
+          <mat-option [value]="1">1 Ball</mat-option>
+          <mat-option [value]="2">2 Balls</mat-option>
+          <mat-option [value]="3">3 Balls</mat-option>
         </mat-select>
         <mat-checkbox [(ngModel)]="game.isNet" [disabled]="!round.canEdit" (change)="updateNetVsGross()">Use Handicaps (Net)</mat-checkbox>
         <mat-form-field class="half-width m-t-15">
@@ -19,8 +24,8 @@
     </mat-card-content>
   </mat-card>
 </div>
-<div *ngIf="game">
-  <app-payouts *ngIf="game.scoringType === 'Payouts'" [disabled]="!round.canEdit" [game]="game" [players]="round.players.length"></app-payouts>
+<div *ngIf="game && game.scoringType === 2">
+  <app-payouts [disabled]="!round.canEdit" [game]="game" [players]="round.players.length"></app-payouts>
 </div>
 <div fxLayout="row" *ngIf="round && game">
   <mat-card style="width: 100%">

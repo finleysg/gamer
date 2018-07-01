@@ -60,48 +60,22 @@ export class GroupScoreComponent implements OnInit {
     }
   }
 
-  // getScoreClass(score: Score): string {
-  //   let scoreClass = 'par';
-  //   if (score.noScore) {
-  //     scoreClass = 'no-score';
-  //   } else if (score.grossScore === 0) {
-  //     scoreClass = 'empty';
-  //   } else {
-  //     if (score.grossScore + 2 <= this.hole.par) {
-  //       scoreClass = 'eagle';
-  //     } else if (score.grossScore + 1 === this.hole.par) {
-  //       scoreClass = 'birdie';
-  //     } else if (score.grossScore === this.hole.par + 1) {
-  //       scoreClass = 'bogey';
-  //     } else if (score.grossScore > this.hole.par + 1) {
-  //       scoreClass = 'big-number';
-  //     }
-  //   }
-  //   return `score-box m-t-15 ${scoreClass}`;
-  // }
-
-  nextHole(): void {
-    if (this.hole.holeNumber < this.round.course.numberOfHoles) {
-      if (this.round.canEdit) {
-        this.roundService.saveScores(this.scores.filter(s => s.dirty));
-      }
-      this.router.navigate(['/scoring', this.round.code, 'hole', this.group.number, this.hole.holeNumber + 1]);
+  saveHole(): void {
+    if (this.round.canEdit) {
+      this.roundService.saveScores(this.scores.filter(s => s.dirty));
     }
-  }
-
-  previousHole(): void {
-    if (this.hole.holeNumber > 1) {
-      if (this.round.canEdit) {
-        this.roundService.saveScores(this.scores.filter(s => s.dirty));
-      }
-      this.router.navigate(['/scoring', this.round.code, 'hole', this.group.number, this.hole.holeNumber - 1]);
+    if (this.hole.holeNumber < this.round.course.numberOfHoles) {
+      this.router.navigate(['/scoring', this.round.code, 'hole', this.group.number, this.hole.holeNumber + 1]);
+    } else {
+      const side = (this.hole.holeNumber < 10) ? 'front' : 'back';
+      this.router.navigate(['/scoring', this.round.code, 'leaderboard', side, 0]);
     }
   }
 
   toLeaderboard(): void {
-    if (this.round.canEdit) {
-      this.roundService.saveScores(this.scores.filter(s => s.dirty));
-    }
+    // if (this.round.canEdit && this.isDirty) {
+    //   this.roundService.saveScores(this.scores.filter(s => s.dirty));
+    // }
     const side = (this.hole.holeNumber < 10) ? 'front' : 'back';
     this.router.navigate(['/scoring', this.round.code, 'leaderboard', side, 0]);
   }
@@ -113,18 +87,28 @@ export class GroupScoreComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(hole => {
-      if (this.round.canEdit) {
-        this.roundService.saveScores(this.scores.filter(s => s.dirty));
-      }
+      // if (this.round.canEdit && this.isDirty) {
+      //   this.roundService.saveScores(this.scores.filter(s => s.dirty));
+      // }
       this.router.navigate(['/scoring', this.round.code, 'hole', this.group.number, hole]);
     });
   }
 
+  toProgress(): void {
+    // if (this.round.canEdit && this.isDirty) {
+    //   this.roundService.saveScores(this.scores.filter(s => s.dirty));
+    // }
+    this.router.navigate(['/scoring', this.round.code, 'progress']);
+  }
   // TODO: use a deactivate guard to save?
   saveScores(): boolean {
     if (this.round.canEdit) {
       this.roundService.saveScores(this.scores.filter(s => s.dirty));
     }
     return true;
+  }
+
+  get isDirty(): boolean {
+    return this.scores.some(s => s.dirty);
   }
 }

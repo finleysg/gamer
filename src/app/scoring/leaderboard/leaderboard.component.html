@@ -58,7 +58,7 @@
       </table>
     </div>
   </div>
-  <!-- <div fxLayout="row">
-    <button mat-button color="primary" (click)="randomScores()">Random</button>
-  </div> -->
+  <div fxLayout="row" *ngIf="round.canEdit">
+    <button mat-button color="primary" (click)="closeRound()">Complete Round</button>
+  </div>
 </div>

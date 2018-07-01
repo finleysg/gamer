@@ -18,6 +18,10 @@ export class Leaderboard {
       this.players.push(new LeaderboardPlayer(player, this.course, playerScores));
     });
   }
+
+  get isComplete(): boolean {
+    return this.players.every(p => p.isComplete);
+  }
 }
 
 export class LeaderboardPlayer {
@@ -63,6 +67,10 @@ export class LeaderboardPlayer {
       }
       return hole;
     });
+  }
+
+  get isComplete(): boolean {
+    return this.holes.every(h => h.gross > 0);
   }
 }
 

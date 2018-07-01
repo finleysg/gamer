@@ -3,6 +3,7 @@ import { Round } from '../../models/round';
 import { Leaderboard } from '../../models/leaderboard';
 import { RoundService } from '../../services/round.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-leaderboard',
@@ -63,5 +64,18 @@ export class LeaderboardComponent implements OnInit {
           this.leaderboard = leaderboard;
         });
     });
+  }
+
+  closeRound(): void {
+    // TODO: validate and get confirmation
+    if (this.leaderboard.isComplete) {
+      const requests = this.round.games.map(game => {
+        return this.roundService.scoreGame(game);
+      });
+      requests.push(this.roundService.closeRound());
+      forkJoin(requests).subscribe(() => {
+        this.router.navigate(['/results', this.round.code, 'game', this.round.games[0].id]);
+      });
+    }
   }
 }
