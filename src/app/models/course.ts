@@ -68,7 +68,23 @@ export class Course {
   }
 
   calculateHandicap(handicapIndex: number): number {
-    const handicap = (handicapIndex * this.slope) / 113;
-    return Math.round(handicap);
+    if (this.holes.length === 18) {
+      const handicap = (handicapIndex * this.slope) / 113;
+      return Math.round(handicap);
+    } else if (this.holes.length === 9) {
+      const handicap = (this.round(handicapIndex / 2, 1) * this.slope) / 113;
+      return Math.round(handicap);
+    } else {
+      // TODO: log a warning
+      return 0;
+    }
+  }
+
+  round(value: any, precision: number): number {
+    const shift = function (num, exponent) {
+      const numArray = ('' + num).split('e');
+      return +(numArray[0] + 'e' + (numArray[1] ? (+numArray[1] + exponent) : exponent));
+    };
+    return shift(Math.round(shift(value, +precision)), -precision);
   }
 }

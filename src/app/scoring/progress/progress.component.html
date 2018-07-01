@@ -1,0 +1,16 @@
+<div fxLayout="row" *ngIf="round">
+  <mat-card style="width: 100%">
+    <mat-card-header>
+      <mat-card-title>In Progress Results</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div *ngFor="let game of round.games" class="top-border">
+        <h3>{{game.name}}</h3>
+        <app-progress-detail [round]="round" [game]="game"></app-progress-detail>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button (click)="goBack()">Back</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

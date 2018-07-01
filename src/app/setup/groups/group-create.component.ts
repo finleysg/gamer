@@ -55,7 +55,7 @@ export class GroupCreateComponent implements OnInit {
 
   assignFriend(friend: PublicMember, player: Player): void {
     player.memberId = friend.id;
-    player.name = friend.name;
+    player.name = friend.lastName;
     player.handicapIndex = friend.handicap;
   }
 
@@ -63,7 +63,7 @@ export class GroupCreateComponent implements OnInit {
     const player = group.players.find(p => !p.name);
     if (player) {
       player.memberId = this.user.member.id;
-      player.name = this.user.name;
+      player.name = this.user.lastName;
       player.handicapIndex = this.user.member.handicap;
     }
   }

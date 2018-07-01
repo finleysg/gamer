@@ -307,7 +307,7 @@ export class RoundService extends BaseService {
   }
 
   scoreGame(game: Game): Observable<GameResult[]> {
-    return this.http.post(`${this.resultsResource}score/${game.id}/`, {}).pipe(
+    return this.http.post(`${this.resultsResource}${game.id}/calculate`, {}).pipe(
       flatMap(() => {
         return this.getGameResult(game);
       })
@@ -325,7 +325,7 @@ export class RoundService extends BaseService {
   }
 
   getSkinResults(game: Game): Observable<SkinResult[]> {
-    return this.http.get(`${this.resultsResource}results/${game.id}/`).pipe(
+    return this.http.get(`${this.resultsResource}${game.id}/final`).pipe(
       map((json: any) => {
         return json.map(o => {
           const result = new SkinResult().fromJson(o);
@@ -340,7 +340,7 @@ export class RoundService extends BaseService {
   }
 
   getBestBallResults(game: Game): Observable<BestBallResult[]> {
-    return this.http.get(`${this.resultsResource}results/${game.id}/`).pipe(
+    return this.http.get(`${this.resultsResource}${game.id}/final`).pipe(
       map((json: any) => {
         return json.map(o => {
           const result = new BestBallResult().fromJson(o);

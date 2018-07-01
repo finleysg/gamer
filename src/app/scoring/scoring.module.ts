@@ -7,6 +7,9 @@ import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { ScoringComponent } from './scoring.component';
 import { JumpDialogComponent } from './jump-dialog/jump-dialog.component';
 import { MatGridListModule, MatDialogModule } from '@angular/material';
+import { ProgressComponent } from './progress/progress.component';
+import { ScoringService } from './scoring.service';
+import { ProgressDetailComponent } from './progress-detail/progress-detail.component';
 
 @NgModule({
   imports: [
@@ -16,6 +19,7 @@ import { MatGridListModule, MatDialogModule } from '@angular/material';
     MatDialogModule
   ],
   providers: [
+    ScoringService
   ],
   entryComponents: [
     JumpDialogComponent
@@ -24,7 +28,9 @@ import { MatGridListModule, MatDialogModule } from '@angular/material';
     ScoringComponent,
     GroupScoreComponent,
     LeaderboardComponent,
-    JumpDialogComponent
+    JumpDialogComponent,
+    ProgressComponent,
+    ProgressDetailComponent
   ]
 })
 export class ScoringModule { }
