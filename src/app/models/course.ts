@@ -6,6 +6,7 @@ export class Course {
   numberOfHoles: number;
   slope: number;
   rating: number;
+  owner: number;
   holes: Hole[] = [];
 
   get par(): number {
@@ -42,6 +43,7 @@ export class Course {
     this.numberOfHoles = json.number_of_holes;
     this.slope = json.slope;
     this.rating = json.rating;
+    this.owner = json.owner;
     if (json.holes) {
       json.holes.forEach(hole => {
         this.holes.push(new Hole().fromJson(hole));
@@ -59,6 +61,7 @@ export class Course {
       'number_of_holes': this.numberOfHoles,
       'slope': this.slope,
       'rating': this.rating,
+      'owner': this.owner,
       'holes': holes
     };
   }

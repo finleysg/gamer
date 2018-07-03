@@ -1,10 +1,6 @@
 {
   "name": "gamer",
-<<<<<<< HEAD
-  "version": "0.1.1",
-=======
-  "version": "0.2.0",
->>>>>>> 64da8731d2167f7f82ef930590d6644f2a5205ad
+  "version": "0.2.1",
   "license": "MIT",
   "scripts": {
     "ng": "ng",

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Course } from '../../models/course';
 import { CourseService } from '../../services/course.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-course-create',
@@ -10,22 +11,38 @@ import { CourseService } from '../../services/course.service';
 })
 export class CourseCreateComponent implements OnInit {
 
-  newCourse: Course;
+  course: Course;
+  canEdit: boolean;
 
   constructor(
     private courseService: CourseService,
+    private userService: UserService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
 
   ngOnInit() {
-    this.newCourse = new Course();
-    this.newCourse.numberOfHoles = 18;
+    this.route.params.subscribe(p => {
+      const id = +p['id'];
+      this.courseService.getCourse(id).subscribe(c => {
+        this.course = c;
+        this.canEdit = this.course.owner === this.userService.user.member.id;
+      });
+    });
   }
 
-  onNext() {
-    this.courseService.createCourse(this.newCourse).subscribe((course: Course) => {
-      this.router.navigate(['edit', course.id.toString()], { relativeTo: this.route.parent });
+  save(): void {
+    this.courseService.updateCourse(this.course).subscribe((c: Course) => {
+      this.course = c;
+    });
+  }
+
+  copy(): void {
+    this.course.id = null;
+    this.course.name = `${this.course.name} Copy`;
+    this.course.owner = this.userService.user.member.id;
+    this.courseService.createCourse(this.course).subscribe(c => {
+      this.router.navigate([c.id], {relativeTo: this.route.parent});
     });
   }
 }

@@ -17,6 +17,7 @@ import { GameType } from '../models/gameType';
 import { SkinResult, BestBallResult, GameResult } from '../models/results';
 import { UserService } from './user.service';
 import { MatSnackBar } from '@angular/material';
+import * as moment from 'moment';
 
 @Injectable()
 export class RoundService extends BaseService {
@@ -73,9 +74,10 @@ export class RoundService extends BaseService {
     );
   }
 
-  createRound(course: Course): Observable<Round> {
+  createRound(course: Course, datePlayed: moment.Moment): Observable<Round> {
     const round = new Round();
     round.course = course;
+    round.played = datePlayed;
     return this.http.post(this.resource, round.toJson(), {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
     })

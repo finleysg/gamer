@@ -7,8 +7,7 @@ import { CourseHolesComponent } from './course-holes/course-holes.component';
 const routes: Routes = [
   { path: '', children: [
     { path: 'select', component: CourseSelectComponent },
-    { path: 'create', component: CourseCreateComponent },
-    { path: 'holes/:id', component: CourseHolesComponent }
+    { path: 'edit/:id', component: CourseCreateComponent }
   ]}
 ];
 
