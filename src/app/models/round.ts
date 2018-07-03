@@ -9,6 +9,7 @@ export class Round {
   id: number;
   code: string;
   created: moment.Moment;
+  played: moment.Moment;
   completed: boolean;
   course: Course;
   groups: Group[] = [];
@@ -197,6 +198,7 @@ export class Round {
     this.course = course;
     this.code = json.code;
     this.created = moment(json.created);
+    this.played = json.played ? moment(json.played) : moment(json.created);
     this.completed = json.is_complete;
     if (json.groups) {
       json.groups.forEach(group => {
@@ -216,6 +218,7 @@ export class Round {
   toJson(): any {
     return {
       'code': '',
+      'played': this.played.format('YYYY-MM-DD'),
       'is_complete': this.completed,
       'course': this.course.id
     };

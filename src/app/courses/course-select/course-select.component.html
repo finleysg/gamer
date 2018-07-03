@@ -2,6 +2,11 @@
   <h2>Select or Create a Course</h2>
 </div>
 <div class="m-t-30" fxLayout="row" fxLayoutAlign="center none" >
+  <mat-form-field class="partial-width-75">
+    <input matInput placeholder="Date of Round" name="datePlayed" [ngModel]="datePlayed | date:'yyyy-MM-dd'" type="date" (ngModelChange)="datePlayed = $event" />
+  </mat-form-field>
+</div>
+<div class="m-t-30" fxLayout="row" fxLayoutAlign="center none" >
   <mat-select [(ngModel)]="selectedCourse" name="course" placeholder="Available Courses" class="partial-width-75">
     <mat-option *ngFor="let course of courses" [value]="course">{{course.name}}</mat-option>
   </mat-select>

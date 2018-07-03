@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Course } from '../../models/course';
 import { CourseService } from '../../services/course.service';
 import { RoundService } from '../../services/round.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-course-select',
@@ -13,6 +14,7 @@ export class CourseSelectComponent implements OnInit {
 
   courses: Course[];
   selectedCourse: Course;
+  datePlayed: Date;
 
   constructor(
     private courseService: CourseService,
@@ -22,12 +24,13 @@ export class CourseSelectComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.datePlayed = moment().toDate();
     this.courseService.getCourses().subscribe(courses => this.courses = courses);
   }
 
   onNext(): void {
     if (this.selectedCourse) {
-      this.roundService.createRound(this.selectedCourse)
+      this.roundService.createRound(this.selectedCourse, moment(this.datePlayed))
         .subscribe(round => {
           this.router.navigate(['../setup', round.code.toLowerCase(), 'groups'])
             .then((result) => {
