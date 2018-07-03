@@ -52,7 +52,8 @@ export class LeaderboardPlayer {
       hole.holeNumber = h.holeNumber;
       hole.par = h.par;
       hole.gross = !score ? 0 : score.grossScore;
-      hole.net = !score ? 0 : score.grossScore - h.getBumps(this.courseHandicap, course.numberOfHoles);
+      hole.bumps = h.getBumps(this.courseHandicap, course.numberOfHoles);
+      hole.net = !score ? 0 : score.grossScore - hole.bumps;
       hole.noScore = !score ? false : score.noScore;
       this.totalScore += hole.gross;
       this.totalNetScore += hole.net;
@@ -80,6 +81,7 @@ export class LeaderboardHole {
   gross: number;
   net: number;
   noScore: boolean;
+  bumps: number;
 
   get grossClass(): string {
     let scoreClass = 'par';

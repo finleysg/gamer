@@ -44,8 +44,12 @@
           <td>{{player.name}}</td>
           <td class="player-handicap">{{player.courseHandicap}}</td>
           <td *ngFor="let hole of player.holes | sideFilter: side" [class]="net ? hole.netClass : hole.grossClass">
+            <div style="position: relative;">
+              <span class="bump" *ngIf="hole.bumps === 1">*</span>
+            </div>
             <span *ngIf="!net && hole.gross > 0">{{hole.gross}}</span>
             <span *ngIf="net && hole.gross > 0">{{hole.net}}</span>
+          <!-- <mat-icon class="bump" *ngIf="hole.bumps === 1">lens</mat-icon> -->
           </td>
           <td *ngIf="!net" class="hole-subtotal">{{side === 'front' ? player.totalFrontScore : player.totalBackScore}}</td>
           <td *ngIf="net" class="hole-subtotal">{{side === 'front' ? player.totalFrontNetScore : player.totalBackNetScore}}</td>

@@ -1,3 +1,83 @@
-<p>
-  course-create works!
-</p>
+<div fxLayout="column" *ngIf="course" class="m-l-15 m-r-15">
+  <div class="m-t-30" fxLayout="row" fxLayoutAlign="center none">
+    <h2>Course Details</h2>
+  </div>
+  <div fxLayout="row">
+    <mat-form-field appearance="fill" fxFlex>
+      <mat-label>Course Name</mat-label>
+      <input matInput placeholder="Course Name" name="name" [(ngModel)]="course.name">
+    </mat-form-field>
+  </div>
+  <div fxLayout="row" fxLayoutGap="10px">
+    <mat-form-field appearance="fill" fxFlex="30">
+      <mat-label>Rating</mat-label>
+      <input matInput placeholder="Rating" name="rating" [(ngModel)]="course.rating">
+    </mat-form-field>
+    <mat-form-field appearance="fill" fxFlex="30">
+      <mat-label>Slope</mat-label>
+      <input matInput placeholder="Slope" name="slope" [(ngModel)]="course.slope">
+    </mat-form-field>
+    <mat-form-field appearance="fill" fxFlex="30">
+      <mat-label>Holes</mat-label>
+      <input matInput placeholder="Holes" name="numberOfHoles" [(ngModel)]="course.numberOfHoles">
+    </mat-form-field>
+  </div>
+  <div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex="50">
+      <div fxLayout="row" fxLayoutGap="5px">
+        <div fxFlex="10">
+          <span class="column-header"></span>
+        </div>
+        <div fxFlex="33">
+          <span class="column-header">Par</span>
+        </div>
+        <div fxFlex="33">
+          <span class="column-header">Hcp</span>
+        </div>
+      </div>
+    </div>
+    <div fxFlex="50">
+      <div fxLayout="row">
+        <div fxFlex="20" fxLayoutGap="5px">
+          <span class="column-header"></span>
+        </div>
+        <div fxFlex="33">
+          <span class="column-header">Par</span>
+        </div>
+        <div fxFlex="33">
+          <span class="column-header">Hcp</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex="50">
+      <div fxLayout="row" fxLayoutGap="5px" *ngFor="let hole of course.holes | holeFilter:'front'">
+        <div class="hole-number" fxFlex="10">{{hole.holeNumber}}</div>
+        <mat-form-field appearance="outline" fxFlex="30">
+          <input matInput [(ngModel)]="hole.par">
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="30">
+          <input matInput [(ngModel)]="hole.handicap">
+        </mat-form-field>
+      </div>
+    </div>
+    <div fxFlex="50">
+      <div fxLayout="row" fxLayoutGap="5px" *ngFor="let hole of course.holes | holeFilter:'back'">
+        <div class="hole-number" fxFlex="15">{{hole.holeNumber}}</div>
+        <mat-form-field appearance="outline" fxFlex="30">
+          <input matInput [(ngModel)]="hole.par">
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="30">
+          <input matInput [(ngModel)]="hole.handicap">
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="m-t-15" fxLayout="row" fxLayoutAlign="center none">
+    <button mat-raised-button color="primary" (click)="save()">Save</button>
+  </div>
+  <a mat-fab class="mat-fab-top-right m-r-10 m-t-50" color="warn" (click)="copy()">
+    <mat-icon>content_copy</mat-icon>
+  </a>
+</div>

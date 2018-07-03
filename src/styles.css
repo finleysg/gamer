@@ -38,6 +38,9 @@
     flex: 1 1 auto;
   }
 
+  .m-10 {
+    margin: 10px;
+  }
   .m-15 {
     margin: 15px;
   }
@@ -104,8 +107,11 @@
     margin-right: 30px !important;
   }
 
+  .p-5 {
+    padding: 5px !important;
+  }
   .p-t-5 {
-    padding-top: 5 !important;
+    padding-top: 5px !important;
   }
 
   .p-t-10 {
